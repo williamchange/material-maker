@@ -163,8 +163,14 @@ func _gui_input(event) -> void:
 									return
 			# Only popup the UI library if Ctrl is not pressed to avoid conflicting
 			# with the Ctrl + Space shortcut.
-			node_popup.position = Vector2i(get_screen_transform()*get_local_mouse_position())
-			node_popup.show_popup()
+			var closest_connection : Dictionary = get_closest_connection_at_point(get_local_mouse_position(), connection_lines_thickness + 2.0)
+			if not closest_connection.is_empty():
+				node_popup.add_to_connection = true
+				node_popup.target_connection = closest_connection
+				request_popup(closest_connection.from_node, closest_connection.from_port, get_local_mouse_position(), false)
+			else:
+				node_popup.position = Vector2i(get_screen_transform()*get_local_mouse_position())
+				node_popup.show_popup()
 		else:
 			if event.button_index == MOUSE_BUTTON_LEFT:
 				if event.double_click:

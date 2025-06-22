@@ -11,6 +11,9 @@ var qc_slot : int
 var qc_slot_type : int
 var qc_is_output : bool
 
+var add_to_connection : bool = false
+var target_connection : Dictionary
+
 @onready var library_manager = get_node("/root/MainWindow/NodeLibraryManager")
 
 
@@ -28,31 +31,49 @@ func _ready() -> void:
 func filter_entered(_filter) -> void:
 	_on_list_item_activated(0)
 
+func add_node_to_connection(node_data) -> void:
+	pass
 
 func add_node(node_data) -> void:
 	var current_graph : GraphEdit = get_current_graph()
 	current_graph.undoredo.start_group()
-	var nodes : Array = current_graph.create_nodes(node_data, insert_position)
-	if not nodes.is_empty():
+	
+	if add_to_connection:
+		current_graph.do_disconnect_node(
+				target_connection.from_node, target_connection.from_port,
+				target_connection.to_node, target_connection.to_port)
+		var nodes : Array = current_graph.create_nodes(node_data, insert_position)
 		var node : GraphNode = nodes[0] as GraphNode
-		if node != null:
-			if qc_node != "": # dragged from port
-				var port_position : Vector2
-				if qc_is_output:
-					for new_slot in node.get_output_port_count():
-						var slot_type : int = node.get_output_port_type(new_slot)
-						if qc_slot_type == slot_type or slot_type == 42 or qc_slot_type == 42:
-							current_graph.on_connect_node(node.name, new_slot, qc_node, qc_slot)
-							port_position = node.get_output_port_position(new_slot)
-							break
-				else:
-					for new_slot in node.get_input_port_count():
-						var slot_type : int = node.get_input_port_type(new_slot)
-						if qc_slot_type == slot_type or slot_type == 42 or qc_slot_type == 42:
-							current_graph.on_connect_node(qc_node, qc_slot, node.name, new_slot)
-							port_position = node.get_input_port_position(new_slot)
-							break
-				node.position_offset -= port_position/current_graph.zoom
+		current_graph.on_connect_node(target_connection.from_node, target_connection.from_port, node.name, 0)
+		
+		var slot_type : int = node.get_output_port_type(0)
+		var target_slot_type = current_graph.get_node(NodePath(target_connection.to_node)).get_input_port_type(0)
+		if slot_type == target_slot_type or (slot_type == 42 or target_slot_type == 42):
+			current_graph.on_connect_node(node.name, 0, target_connection.to_node, target_connection.to_port)
+		target_connection.clear()
+		add_to_connection = false
+	else:
+		var nodes : Array = current_graph.create_nodes(node_data, insert_position)
+		if not nodes.is_empty():
+			var node : GraphNode = nodes[0] as GraphNode
+			if node != null:
+				if qc_node != "": # dragged from port
+					var port_position : Vector2
+					if qc_is_output:
+						for new_slot in node.get_output_port_count():
+							var slot_type : int = node.get_output_port_type(new_slot)
+							if qc_slot_type == slot_type or slot_type == 42 or qc_slot_type == 42:
+								current_graph.on_connect_node(node.name, new_slot, qc_node, qc_slot)
+								port_position = node.get_output_port_position(new_slot)
+								break
+					else:
+						for new_slot in node.get_input_port_count():
+							var slot_type : int = node.get_input_port_type(new_slot)
+							if qc_slot_type == slot_type or slot_type == 42 or qc_slot_type == 42:
+								current_graph.on_connect_node(qc_node, qc_slot, node.name, new_slot)
+								port_position = node.get_input_port_position(new_slot)
+								break
+					node.position_offset -= port_position/current_graph.zoom
 	current_graph.undoredo.end_group()
 	get_node("/root/MainWindow/NodeLibraryManager").item_created(node_data.tree_item)
 	todo_renamed_hide()
