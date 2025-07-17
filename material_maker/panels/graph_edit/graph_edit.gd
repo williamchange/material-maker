@@ -47,6 +47,7 @@ signal preview_changed
 
 
 func _ready() -> void:
+	simplify_nodes()
 	OS.low_processor_usage_mode = true
 	center_view()
 	for t in range(41):
@@ -66,6 +67,7 @@ func get_graph_edit():
 
 
 func do_zoom(factor : float):
+	simplify_nodes()
 	accept_event()
 	var old_zoom : float = zoom
 	zoom *= factor
@@ -75,6 +77,18 @@ func do_zoom(factor : float):
 
 var port_click_node : GraphNode
 var port_click_port_index : int = -1
+
+func simplify_nodes():
+	const start_fade : float = 0.5
+	var opacity : float = clamp(inverse_lerp(0.3, start_fade, zoom), 0.0, 1.0)
+	var modulate_color = Color(1.0, 1.0, 1.0, opacity)
+	for node in get_children():
+		if node is GraphNode:
+			if node.has_method("get_titlebar_hbox"):
+				node.get_titlebar_hbox().modulate = modulate_color
+			for control in node.get_children():
+				if control.get("modulate"):
+					control.modulate = modulate_color
 
 func get_nodes_under_mouse() -> Array:
 	var array : Array = []
@@ -128,6 +142,10 @@ func _gui_input(event) -> void:
 			update_view(selected_nodes[0].generator)
 	elif event is InputEventMouseButton:
 		# reverted to default GraphEdit behavior
+
+		# hide node controls if we're zoomed out far enough
+		simplify_nodes()
+
 		if false and event.button_index == MOUSE_BUTTON_WHEEL_UP and event.is_pressed():
 			if event.control:
 				event.control = false
@@ -462,6 +480,7 @@ func update_graph(generators, connections) -> Array:
 			node.generator = g
 		node.do_set_position(g.position)
 		node.move_to_front()
+		simplify_nodes()
 		rv.push_back(node)
 	for c in connections:
 		super.connect_node("node_"+c.from, c.from_port, "node_"+c.to, c.to_port)
