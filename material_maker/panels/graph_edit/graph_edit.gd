@@ -144,7 +144,8 @@ func _gui_input(event) -> void:
 		# reverted to default GraphEdit behavior
 
 		# hide node controls if we're zoomed out far enough
-		simplify_nodes()
+		if event.button_index == MOUSE_BUTTON_WHEEL_DOWN or event.button_index == MOUSE_BUTTON_WHEEL_UP:
+			simplify_nodes()
 
 		if false and event.button_index == MOUSE_BUTTON_WHEEL_UP and event.is_pressed():
 			if event.control:
