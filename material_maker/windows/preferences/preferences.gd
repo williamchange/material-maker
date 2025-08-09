@@ -70,6 +70,10 @@ func _on_DownloadLanguage_closed():
 	update_language_list()
 
 func setup_preferences_category_tree() -> void:
+	var selected_section_id : int = 0
+	var current_section : TreeItem = %Tree.get_selected()
+	if current_section:
+		selected_section_id = current_section.get_metadata(0)
 	%Tree.clear()
 	%Tree.hide_root = true
 	var root : TreeItem = %Tree.create_item()
@@ -78,9 +82,10 @@ func setup_preferences_category_tree() -> void:
 	for child in %TabContainer.get_children():
 		var item : TreeItem = %Tree.create_item()
 		item.set_text(0, " " + tr(child.name) + " ")
+		item.set_metadata(0, child.get_index())
 		sections.append(item)
 
-	%Tree.set_selected(sections[0], 0)
+	%Tree.set_selected(sections[selected_section_id], 0)
 
 
 func _on_ready() -> void:
