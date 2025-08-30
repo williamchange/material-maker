@@ -667,6 +667,11 @@ func export_material(export_prefix, profile) -> void:
 
 # Cut / copy / paste / duplicate
 
+func copy_node_name() -> void:
+	if get_selected_nodes().size() == 1:
+		DisplayServer.clipboard_set(get_selected_nodes()[0].name.trim_prefix("node_"))
+		mm_globals.set_tip_text("Copied internal node name.")
+
 func get_selected_nodes() -> Array:
 	var selected_nodes = []
 	for n in get_children():

@@ -69,6 +69,7 @@ const MENU : Array[Dictionary] = [
 	{ menu="Edit/-" },
 	{ menu="Edit/Cut", command="edit_cut", shortcut="Control+X" },
 	{ menu="Edit/Copy", command="edit_copy", shortcut="Control+C" },
+	{ menu="Edit/Copy Node Name", command="edit_copy_node_name", shortcut="Control+Shift+C" },
 	{ menu="Edit/Paste", command="edit_paste", shortcut="Control+V" },
 	{ menu="Edit/Duplicate", command="edit_duplicate", shortcut="Control+D" },
 	{ menu="Edit/Duplicate with inputs", command="edit_duplicate_with_inputs", shortcut="Control+Shift+D" },
@@ -749,6 +750,11 @@ func edit_copy() -> void:
 	var graph_edit : MMGraphEdit = get_current_graph_edit()
 	if graph_edit != null:
 		graph_edit.copy()
+
+func edit_copy_node_name() -> void:
+	var graph_edit : MMGraphEdit = get_current_graph_edit()
+	if graph_edit != null:
+		graph_edit.copy_node_name()
 
 func edit_copy_is_disabled() -> bool:
 	return edit_cut_is_disabled()
