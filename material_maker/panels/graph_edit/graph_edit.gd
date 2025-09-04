@@ -24,6 +24,8 @@ var need_save_crash_recovery : bool = false
 var top_generator = null
 var generator = null
 
+var subgraph_offset : PackedVector2Array
+
 const PREVIEW_COUNT = 2
 var current_preview : Array = [ null, null ]
 var locked_preview : Array = [ null, null ]
@@ -425,7 +427,7 @@ func center_view() -> void:
 		center /= node_count
 		scroll_offset = center * zoom - 0.5*size
 
-func update_view(g) -> void:
+func update_view(g, is_button_up : bool = false) -> void:
 	if generator != null and is_instance_valid(generator):
 		generator.disconnect("connections_changed", Callable(self, "on_connections_changed"))
 	clear_view()
@@ -433,12 +435,29 @@ func update_view(g) -> void:
 	if generator != null:
 		generator.connect("connections_changed", Callable(self, "on_connections_changed"))
 	update_graph(generator.get_children(), generator.connections)
+
+
 	subgraph_ui.visible = generator != top_generator
 	subgraph_ui.get_node("Label").text = generator.label
 	$GraphUI/SubGraphUI/Description.short_description = generator.shortdesc
 	$GraphUI/SubGraphUI/Description.long_description = generator.longdesc
 	$GraphUI/SubGraphUI/Description.update_tooltip()
-	center_view()
+
+	# use a "stack" to track and load/save scroll offsets
+	# when entering / exiting subgraphs
+	if generator != top_generator:
+		if not is_button_up:
+			subgraph_offset.push_back(scroll_offset)
+			center_view()
+		else:
+			var offset : Vector2 = subgraph_offset[-1]
+			scroll_offset = offset
+			subgraph_offset.remove_at(subgraph_offset.size()-1)
+	else:
+		if not subgraph_offset.is_empty():
+			scroll_offset = subgraph_offset[0]
+			subgraph_offset.clear()
+
 	if generator.get_parent() is MMGenGraph:
 		button_transmits_seed.visible = true
 		button_transmits_seed.button_pressed = generator.transmits_seed
@@ -817,7 +836,7 @@ func _drop_data(node_position, data) -> void:
 
 func on_ButtonUp_pressed() -> void:
 	if generator != top_generator and generator.get_parent() is MMGenGraph:
-		call_deferred("update_view", generator.get_parent())
+		update_view.call_deferred(generator.get_parent(), true)
 
 func _on_Label_text_changed(new_text) -> void:
 	generator.set_type_name(new_text)
