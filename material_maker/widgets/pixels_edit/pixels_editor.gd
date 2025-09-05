@@ -75,11 +75,11 @@ func draw_pixel() -> void:
 	self.value_changed.emit(pixels)
 
 func draw_pixel_line() -> void:
-	var click_from : Vector2 = reverse_transform_point(last_mouse_pos)
-	var pixel_position_from : Vector2i = Vector2i(Vector2(pixels.size)*click_from)
-	var click_to : Vector2 = reverse_transform_point(get_local_mouse_position())
-	var pixel_position_to : Vector2i = Vector2i(Vector2(pixels.size)*click_to)
-	for pixel : Vector2i in Geometry2D.bresenham_line(pixel_position_from, pixel_position_to):
+	var from : Vector2 = reverse_transform_point(last_mouse_pos)
+	var to : Vector2 = reverse_transform_point(get_local_mouse_position())
+	var pixel_from : Vector2i = Vector2i(Vector2(pixels.size) * from)
+	var pixel_to : Vector2i = Vector2i(Vector2(pixels.size) * to)
+	for pixel : Vector2i in Geometry2D.bresenham_line(pixel_from, pixel_to):
 		pixels.set_color_index(pixel.x, pixel.y, current_color)
 	queue_redraw()
 	self.value_changed.emit(pixels)
