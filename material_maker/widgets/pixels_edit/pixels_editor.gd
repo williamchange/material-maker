@@ -84,11 +84,43 @@ func draw_pixel_line() -> void:
 	queue_redraw()
 	self.value_changed.emit(pixels)
 
+func draw_fill() -> void:
+	var click_position : Vector2 = reverse_transform_point(get_local_mouse_position())
+	var pixel_position : Vector2i = Vector2i(Vector2(pixels.size)*click_position)
+	flood_fill(pixel_position.x, pixel_position.y, current_color)
+	queue_redraw()
+	self.value_changed.emit(pixels)
+
+func flood_fill(x, y, new_color):
+	var current = pixels.get_color_index(x, y)
+	if current == new_color:
+		return
+	var col_size := pixels.size.x - 1
+	var row_size := pixels.size.y - 1
+	var stack := PackedVector2Array([Vector2(y,x)])
+
+	while not stack.is_empty():
+		var row := int(stack[-1].x)
+		var col := int(stack[-1].y)
+		stack.remove_at(stack.size()-1)
+		if row > 0 and pixels.get_color_index(col, row - 1) == current:
+			stack.push_back(Vector2(row - 1, col))
+		if row < row_size and pixels.get_color_index(col, row + 1) == current:
+			stack.push_back(Vector2(row + 1, col))
+		if col > 0 and pixels.get_color_index(col - 1, row) == current:
+			stack.push_back(Vector2(row, col - 1))
+		if col < col_size and pixels.get_color_index(col + 1, row) == current:
+			stack.push_back(Vector2(row, col + 1))
+		pixels.set_color_index(col, row, new_color)
+
+
 func _on_PixelsEditor_gui_input(event : InputEvent):
 	if event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
 			if event.shift_pressed and last_mouse_pos:
 				draw_pixel_line()
+			elif event.is_command_or_control_pressed():
+				draw_fill()
 			last_mouse_pos = get_local_mouse_position()
 			draw_pixel()
 			return
