@@ -207,6 +207,7 @@ metadata/_custom_type_script = "uid://3ga2k3abkk0d"
 script = ExtResource("4_0efyb")
 name = "GraphEditLassoStroke"
 orig = Color(0.9882353, 0.99215686, 0.9882353, 1)
+target = Color(1, 1, 1, 1)
 metadata/_custom_type_script = "uid://3ga2k3abkk0d"
 
 [resource]
