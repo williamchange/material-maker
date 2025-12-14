@@ -292,12 +292,13 @@ static func create_parameter_control(p : Dictionary, accept_float_expressions : 
 	if !p.has("type"):
 		return null
 	if p.type == "float":
-		control = preload("res://material_maker/widgets/float_edit/float_edit.tscn").instantiate()
-		if ! accept_float_expressions:
-			control.float_only = true
+		control = LightFloatEdit.new()
+		#control = preload("res://material_maker/widgets/float_edit/float_edit.tscn").instantiate()
+		#if ! accept_float_expressions:
+			#control.float_only = true
 		control.min_value = p.min
 		control.max_value = p.max
-		control.step = 0.005 if !p.has("step") else p.step
+		#control.step = 0.005 if !p.has("step") else p.step
 		if p.has("default"):
 			control.value = p.default
 		control.custom_minimum_size.x = 60

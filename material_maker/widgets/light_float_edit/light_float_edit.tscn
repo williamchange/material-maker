@@ -1,0 +1,19 @@
+[gd_scene load_steps=3 format=3 uid="uid://dgkmhhfbavuxf"]
+
+[ext_resource type="Script" uid="uid://bnl38owtv8xmg" path="res://material_maker/widgets/light_float_edit/light_float_edit.gd" id="1_ckxyq"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ckxyq"]
+bg_color = Color(1, 0.29166782, 0.5381082, 1)
+
+[node name="LightFloatEdit" type="PanelContainer"]
+custom_minimum_size = Vector2(120, 15)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_ckxyq")
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_ckxyq")
