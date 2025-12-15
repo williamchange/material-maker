@@ -292,7 +292,7 @@ static func create_parameter_control(p : Dictionary, accept_float_expressions : 
 	if !p.has("type"):
 		return null
 	if p.type == "float":
-		control = LightFloatEdit.new()
+		control = OptimizedFloatEdit.new()
 		#control = preload("res://material_maker/widgets/float_edit/float_edit.tscn").instantiate()
 		#if ! accept_float_expressions:
 			#control.float_only = true

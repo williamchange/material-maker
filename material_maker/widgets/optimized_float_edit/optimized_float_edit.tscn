@@ -1,0 +1,20 @@
+[gd_scene load_steps=2 format=3 uid="uid://dgkmhhfbavuxf"]
+
+[ext_resource type="Script" uid="uid://bnl38owtv8xmg" path="res://material_maker/widgets/optimized_float_edit/optimized_float_edit.gd" id="1_ckxyq"]
+
+[node name="LightFloatEdit" type="Control"]
+custom_minimum_size = Vector2(120, 15)
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -59.5
+offset_top = -7.0
+offset_right = 59.5
+offset_bottom = 7.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_ckxyq")
+
+[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]
