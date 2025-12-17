@@ -14,6 +14,16 @@ func _context_menu_about_to_popup(context_menu : PopupMenu):
 			get_mouse_position() * _content_scale_factor)
 
 func _ready() -> void:
+	var hsplit : HSplitContainer
+	for c in get_children(true):
+		for node in c.get_children(true):
+			if node is HSplitContainer:
+				hsplit = node
+				break
+	if hsplit:
+		hsplit.dragging_enabled = false
+		hsplit.dragger_visibility = SplitContainer.DRAGGER_HIDDEN_COLLAPSED
+
 	if file_mode == FileMode.FILE_MODE_SAVE_FILE:
 		ok_button_text = tr("Save")
 	_content_scale_factor = mm_globals.main_window.get_window().content_scale_factor
