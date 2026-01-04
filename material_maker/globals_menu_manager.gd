@@ -182,6 +182,7 @@ class MenuBarDisplayServer:
 	func create_menus(menu_def : Array, object : Object):
 		DisplayServer.global_menu_clear("_main")
 		DisplayServer.global_menu_clear("_help")
+		DisplayServer.global_menu_clear("_apple")
 		var menus : Array[String] = []
 		for md in menu_def:
 			var menu_name : String = md.menu.split("/")[0]
@@ -192,6 +193,8 @@ class MenuBarDisplayServer:
 		for m in menus:
 			mm_globals.menu_manager.create_menu(menu_def, object, m+"/",
 					MenuDisplayServer.new("_help" if m == "Help" else "_main/"+m))
+		DisplayServer.global_menu_add_item("_apple", "Show Example Projects",
+				OS.shell_open.bind(ProjectSettings.globalize_path("res://material_maker/examples")).unbind(1), Callable())
 
 func _ready():
 	pass
