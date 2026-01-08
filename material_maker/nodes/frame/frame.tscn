@@ -1,0 +1,51 @@
+[gd_scene load_steps=5 format=3 uid="uid://dmb1gd61ghuf7"]
+
+[ext_resource type="Script" uid="uid://rl3vxaldomeg" path="res://material_maker/nodes/frame/frame.gd" id="1_p17ul"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_p17ul"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_p17ul"]
+bg_color = Color(0, 0, 0, 0.19607843)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+corner_detail = 4
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_cpl77"]
+
+[node name="Frame" type="GraphFrame"]
+offset_right = 76.0
+offset_bottom = 143.0
+size_flags_horizontal = 4
+autoshrink_enabled = false
+drag_margin = 30
+tint_color_enabled = true
+script = ExtResource("1_p17ul")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="TextEdit" type="TextEdit" parent="MarginContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+size_flags_vertical = 3
+focus_mode = 0
+mouse_filter = 2
+theme_override_styles/normal = SubResource("StyleBoxEmpty_p17ul")
+theme_override_styles/focus = SubResource("StyleBoxFlat_p17ul")
+theme_override_styles/read_only = SubResource("StyleBoxEmpty_cpl77")
+editable = false
+selecting_enabled = false
+wrap_mode = 1
+caret_blink = true
+
+[connection signal="gui_input" from="." to="." method="_on_gui_input"]
+[connection signal="node_deselected" from="." to="." method="_on_node_deselected"]
+[connection signal="node_selected" from="." to="." method="_on_node_selected"]
+[connection signal="focus_exited" from="MarginContainer/TextEdit" to="." method="_on_text_edit_focus_exited"]

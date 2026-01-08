@@ -140,8 +140,8 @@ texture = ExtResource("3")
 [node name="PanelContainer" type="PanelContainer" parent="PopupSelector"]
 offset_left = 4.0
 offset_top = 4.0
-offset_right = 302.0
-offset_bottom = 545.0
+offset_right = 96.0
+offset_bottom = 96.0
 
 [node name="ColorPicker" type="ColorPicker" parent="PopupSelector/PanelContainer"]
 layout_mode = 2

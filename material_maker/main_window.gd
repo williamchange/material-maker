@@ -78,6 +78,7 @@ const MENU : Array[Dictionary] = [
 	{ menu="Edit/Swap node inputs", command="edit_swap_node_inputs", shortcut="Alt+S"},
 	{ menu="Edit/-" },
 	{ menu="Edit/Frame selected nodes", command="frame_nodes", shortcut="Control+Shift+F" },
+	{ menu="Edit/Detach nodes from frame", command="detach_nodes_from_frame", shortcut="Control+Shift+A" },
 	{ menu="Edit/-" },
 	{ menu="Edit/Select All", command="edit_select_all", shortcut="Control+A" },
 	{ menu="Edit/Select None", command="edit_select_none", shortcut="Control+Shift+A" },
@@ -1046,6 +1047,12 @@ func frame_nodes() -> void:
 			if not mm_globals.get_config("auto_size_comment"):
 				nodes[0].resize_to_selection()
 			nodes[0].selected = true
+
+func detach_nodes_from_frame() -> void:
+	var graph_edit : MMGraphEdit = get_current_graph_edit()
+	if graph_edit != null and get_selected_nodes().size():
+		for i in get_selected_nodes():
+			graph_edit.detach_graph_element_from_frame(i.name)
 
 func make_selected_nodes_editable() -> void:
 	var selected_nodes = get_selected_nodes()

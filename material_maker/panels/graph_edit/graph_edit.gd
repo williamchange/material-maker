@@ -1264,7 +1264,7 @@ func undoredo_command(command : Dictionary) -> void:
 				if has_node("node_"+g.name):
 					var node = get_node("node_"+g.name)
 					node.update_node()
-		"comment_color_change":
+		"comment_color_change", "frame_color_change":
 			var g = get_node_from_hier_name(command.node)
 			g.color = command.color
 			if g.get_parent() == generator:
@@ -1732,7 +1732,7 @@ func _get_connection_line(from: Vector2, to: Vector2) -> PackedVector2Array:
 
 func color_comment_nodes() -> void:
 	var comments := get_children().filter(
-			func(n): return (n is MMGraphComment and n.selected))
+			func(n): return ((n is MMGraphComment or n is MMGraphFrame) and n.selected))
 	if not comments.is_empty():
 		undoredo.start_group()
 		var picker := preload(
@@ -1750,3 +1750,7 @@ func color_comment_nodes() -> void:
 		picker.popup_hide.connect(picker.queue_free)
 		picker.popup_hide.connect(undoredo.end_group)
 		picker.popup()
+
+func _on_graph_elements_linked_to_frame_request(elements: Array, frame: StringName) -> void:
+	for el in elements:
+		attach_graph_element_to_frame(el, frame)
