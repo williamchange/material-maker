@@ -75,7 +75,7 @@ func set_generator(g : MMGenBase, o : int = 0, force : bool = false) -> void:
 				source = MMGenBase.get_default_generated_shader()
 	else:
 		generator = null
-
+	
 	generator_changed.emit()
 	update_material(source)
 
