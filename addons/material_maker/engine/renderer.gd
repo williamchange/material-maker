@@ -58,11 +58,38 @@ func render_text(object: Object, text: String, font_path: String, font_size: int
 	$ColorRect.visible = false
 	#hdr = true
 	render_target_update_mode = SubViewport.UPDATE_ONCE
-	await get_tree().process_frame
-	await get_tree().process_frame
+	await RenderingServer.frame_post_draw
 	texture = get_texture()
 	$Font.visible = false
 	$ColorRect.visible = true
+	return self
+
+func render_nine_patch(object: Object, img_path : String, margin : Vector4,
+		size_x : float, size_y : float, draw_center : bool,
+		axis_stretch_horizontal : NinePatchRect.AxisStretchMode,
+		axis_stretch_vertical : NinePatchRect.AxisStretchMode) -> Object:
+	assert(render_owner == object)
+	
+	$NinePatchRect.position = Vector2.ZERO
+	var img = Image.load_from_file(img_path)
+	$NinePatchRect.texture = ImageTexture.create_from_image(img)
+	$NinePatchRect.draw_center = draw_center
+	$NinePatchRect.patch_margin_left = margin.x
+	$NinePatchRect.patch_margin_top = margin.y
+	$NinePatchRect.patch_margin_right = margin.z
+	$NinePatchRect.patch_margin_bottom = margin.w
+	$NinePatchRect.axis_stretch_horizontal = axis_stretch_horizontal
+	$NinePatchRect.axis_stretch_vertical = axis_stretch_vertical
+	$NinePatchRect.size = Vector2(size_x*size.x, size_y*size.y)
+
+	$Font.visible = false
+	$ColorRect.visible = false
+	$NinePatchRect.visible = true
+	render_target_update_mode = SubViewport.UPDATE_ONCE
+	await RenderingServer.frame_post_draw
+	texture = get_texture()
+	$ColorRect.visible = true
+	$NinePatchRect.visible = false
 	return self
 
 func render_material(object : Object, material : Material, render_size : int, with_hdr : bool = true) -> Object:

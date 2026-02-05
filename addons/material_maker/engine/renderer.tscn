@@ -24,3 +24,8 @@ color = Color(0, 0, 0, 1)
 layout_mode = 0
 offset_right = 40.0
 offset_bottom = 14.0
+
+[node name="NinePatchRect" type="NinePatchRect" parent="."]
+visible = false
+size_flags_horizontal = 4
+size_flags_vertical = 4
