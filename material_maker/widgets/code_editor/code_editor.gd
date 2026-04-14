@@ -22,10 +22,29 @@ const FUNCTIONS : Array[String] = [ "radians", "degrees", "sin", "cos", "tan", "
 									"smoothstep", "length", "distance", "dot", "cross",
 									"normalize" ]
 
+static var code_font : Font
+static var code_font_path : String
+
 func _context_menu_about_to_popup() -> void:
 	var content_scale_factor = mm_globals.main_window.get_window().content_scale_factor
 	get_menu().position = get_window().position + Vector2i(
 			get_global_mouse_position() * content_scale_factor)
+
+func _init() -> void:
+	update_font(false)
+
+func update_font(update_from_config : bool = false) -> void:
+	var font_path = mm_globals.get_config("code_font")
+	if font_path != code_font_path:
+		code_font_path = font_path
+		if update_from_config:
+			code_font = null
+		if not code_font:
+			code_font = FontFile.new()
+			if code_font.load_dynamic_font(font_path) == OK:
+				code_font.multichannel_signed_distance_field = true
+	add_theme_font_override("font", code_font)
+	add_theme_font_size_override("font_size", mm_globals.get_config("code_font_size"))
 
 func _ready():
 	if not get_menu().about_to_popup.is_connected(_context_menu_about_to_popup):
@@ -43,6 +62,10 @@ func _ready():
 	syntax_highlighter.member_variable_color = get_theme_color("member_variable_color", "CodeEdit")
 	syntax_highlighter.add_color_region("//", "", get_theme_color("single_line_comment_color", "CodeEdit"), true)
 	syntax_highlighter.add_color_region("/*", "*/", get_theme_color("multi_line_comment_color", "CodeEdit"), false)
+
+	var main_window : PanelContainer = get_node("/root/MainWindow")
+	if not main_window.config_changed.is_connected(update_font):
+		main_window.config_changed.connect(update_font.bind(true))
 
 func _on_gui_input(event):
 	if event is InputEventKey:

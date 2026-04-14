@@ -1,6 +1,5 @@
-[gd_scene load_steps=4 format=3 uid="uid://ddgb7ul6fncx8"]
+[gd_scene format=3 uid="uid://ddgb7ul6fncx8"]
 
-[ext_resource type="FontFile" uid="uid://c4vhxy5kgdp8s" path="res://material_maker/fonts/hack.ttf" id="1_o6uhb"]
 [ext_resource type="Script" uid="uid://d2ggou7kt4qxd" path="res://material_maker/widgets/code_editor/code_editor.gd" id="2_b3eoo"]
 
 [sub_resource type="CodeHighlighter" id="CodeHighlighter_cib74"]
@@ -9,14 +8,13 @@ symbol_color = Color(0.447059, 0.752941, 0.776471, 1)
 function_color = Color(0.74902, 0.435294, 1, 1)
 member_variable_color = Color(0.419608, 1, 0.4, 1)
 
-[node name="Main Code" type="CodeEdit"]
+[node name="Main Code" type="CodeEdit" unique_id=610718286]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_default_cursor_shape = 0
-theme_override_fonts/font = ExtResource("1_o6uhb")
 theme_override_font_sizes/font_size = 12
 minimap_draw = true
 syntax_highlighter = SubResource("CodeHighlighter_cib74")
@@ -28,7 +26,7 @@ auto_brace_completion_enabled = true
 auto_brace_completion_highlight_matching = true
 script = ExtResource("2_b3eoo")
 
-[node name="Find" type="PanelContainer" parent="."]
+[node name="Find" type="PanelContainer" parent="." unique_id=1871166686]
 unique_name_in_owner = true
 visible = false
 layout_mode = 1
@@ -41,67 +39,67 @@ offset_right = -8.0
 offset_bottom = 40.0
 grow_horizontal = 0
 
-[node name="HBoxContainer" type="HBoxContainer" parent="Find"]
+[node name="HBoxContainer" type="HBoxContainer" parent="Find" unique_id=1417505936]
 layout_mode = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Find/HBoxContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="Find/HBoxContainer" unique_id=545710909]
 layout_mode = 2
 
-[node name="FindControls" type="HBoxContainer" parent="Find/HBoxContainer/VBoxContainer"]
+[node name="FindControls" type="HBoxContainer" parent="Find/HBoxContainer/VBoxContainer" unique_id=39431776]
 layout_mode = 2
 
-[node name="FindString" type="LineEdit" parent="Find/HBoxContainer/VBoxContainer/FindControls"]
+[node name="FindString" type="LineEdit" parent="Find/HBoxContainer/VBoxContainer/FindControls" unique_id=1095522440]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 placeholder_text = "Find"
 
-[node name="CaseSensitive" type="Button" parent="Find/HBoxContainer/VBoxContainer/FindControls"]
+[node name="CaseSensitive" type="Button" parent="Find/HBoxContainer/VBoxContainer/FindControls" unique_id=1676160711]
 layout_mode = 2
 toggle_mode = true
 text = "aB"
 
-[node name="Word" type="Button" parent="Find/HBoxContainer/VBoxContainer/FindControls"]
+[node name="Word" type="Button" parent="Find/HBoxContainer/VBoxContainer/FindControls" unique_id=28903383]
 layout_mode = 2
 toggle_mode = true
 text = "Word"
 
-[node name="FindOccurrences" type="Label" parent="Find/HBoxContainer/VBoxContainer/FindControls"]
+[node name="FindOccurrences" type="Label" parent="Find/HBoxContainer/VBoxContainer/FindControls" unique_id=1935542278]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(80, 0)
 layout_mode = 2
 
-[node name="Previous" type="Button" parent="Find/HBoxContainer/VBoxContainer/FindControls"]
+[node name="Previous" type="Button" parent="Find/HBoxContainer/VBoxContainer/FindControls" unique_id=1570237923]
 layout_mode = 2
 text = "^"
 
-[node name="Next" type="Button" parent="Find/HBoxContainer/VBoxContainer/FindControls"]
+[node name="Next" type="Button" parent="Find/HBoxContainer/VBoxContainer/FindControls" unique_id=1756396603]
 layout_mode = 2
 text = "v"
 
-[node name="Close" type="Button" parent="Find/HBoxContainer/VBoxContainer/FindControls"]
+[node name="Close" type="Button" parent="Find/HBoxContainer/VBoxContainer/FindControls" unique_id=1428491166]
 layout_mode = 2
 text = "x"
 
-[node name="ReplaceControls" type="HBoxContainer" parent="Find/HBoxContainer/VBoxContainer"]
+[node name="ReplaceControls" type="HBoxContainer" parent="Find/HBoxContainer/VBoxContainer" unique_id=346365034]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="ReplaceString" type="LineEdit" parent="Find/HBoxContainer/VBoxContainer/ReplaceControls"]
+[node name="ReplaceString" type="LineEdit" parent="Find/HBoxContainer/VBoxContainer/ReplaceControls" unique_id=353276069]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 placeholder_text = "Replace"
 
-[node name="ReplaceCurrent" type="Button" parent="Find/HBoxContainer/VBoxContainer/ReplaceControls"]
+[node name="ReplaceCurrent" type="Button" parent="Find/HBoxContainer/VBoxContainer/ReplaceControls" unique_id=536304836]
 layout_mode = 2
 text = "RC"
 
-[node name="ReplaceAll" type="Button" parent="Find/HBoxContainer/VBoxContainer/ReplaceControls"]
+[node name="ReplaceAll" type="Button" parent="Find/HBoxContainer/VBoxContainer/ReplaceControls" unique_id=1295016198]
 layout_mode = 2
 text = "RA"
 
-[node name="UpdateFind" type="Timer" parent="."]
+[node name="UpdateFind" type="Timer" parent="." unique_id=1354282323]
 autostart = true
 
 [connection signal="gui_input" from="." to="." method="_on_gui_input"]

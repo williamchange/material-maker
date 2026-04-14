@@ -34,9 +34,9 @@ var preview_3d
 var hierarchy
 var brushes
 
-
 var current_mesh : Mesh = null
 
+signal config_changed()
 
 const FPS_LIMIT_MIN = 20
 const FPS_LIMIT_MAX = 500
@@ -290,6 +290,7 @@ func _input(event: InputEvent) -> void:
 				get_window().mode = Window.MODE_MAXIMIZED
 
 func on_config_changed() -> void:
+	config_changed.emit()
 	DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_ENABLED if (mm_globals.get_config("vsync")) else DisplayServer.VSYNC_DISABLED)
 	# Convert FPS to microseconds per frame.
 	# Clamp the FPS to reasonable values to avoid locking up the UI.
