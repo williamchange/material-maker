@@ -265,122 +265,6 @@ config_variable = "ui_3d_preview_sun_shadow"
 custom_minimum_size = Vector2(0, 10)
 layout_mode = 2
 
-[node name="SectionDisplayFont" type="Label" parent="HSplitContainer/PreferencesPanel/VBoxContainer/TabContainer/General/VBoxContainer" unique_id=980713931]
-layout_mode = 2
-text = "Fonts (requires restart)"
-label_settings = SubResource("LabelSettings_btfio")
-
-[node name="GuiInterfaceMainFont" type="HBoxContainer" parent="HSplitContainer/PreferencesPanel/VBoxContainer/TabContainer/General/VBoxContainer" unique_id=970290701]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="HSplitContainer/PreferencesPanel/VBoxContainer/TabContainer/General/VBoxContainer/GuiInterfaceMainFont" unique_id=1566411163]
-layout_mode = 2
-text = "Main Font"
-
-[node name="FileOption" parent="HSplitContainer/PreferencesPanel/VBoxContainer/TabContainer/General/VBoxContainer/GuiInterfaceMainFont" unique_id=1399365702 instance=ExtResource("7_btfio")]
-custom_minimum_size = Vector2(200, 0)
-layout_mode = 2
-size_flags_horizontal = 10
-config_variable = "main_font"
-file_picker_filters = PackedStringArray("*.ttf; TrueType Font file", "*.otf; OpenType Font file")
-
-[node name="GuiInterfaceMediumFont" type="HBoxContainer" parent="HSplitContainer/PreferencesPanel/VBoxContainer/TabContainer/General/VBoxContainer" unique_id=1369757871]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="HSplitContainer/PreferencesPanel/VBoxContainer/TabContainer/General/VBoxContainer/GuiInterfaceMediumFont" unique_id=176525679]
-layout_mode = 2
-text = "Medium font"
-
-[node name="FileOption" parent="HSplitContainer/PreferencesPanel/VBoxContainer/TabContainer/General/VBoxContainer/GuiInterfaceMediumFont" unique_id=1494515570 instance=ExtResource("7_btfio")]
-custom_minimum_size = Vector2(200, 0)
-layout_mode = 2
-size_flags_horizontal = 10
-config_variable = "medium_font"
-file_picker_filters = PackedStringArray("*.ttf; TrueType Font file", "*.otf; OpenType Font file")
-
-[node name="GuiInterfaceBoldFont" type="HBoxContainer" parent="HSplitContainer/PreferencesPanel/VBoxContainer/TabContainer/General/VBoxContainer" unique_id=895216287]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="HSplitContainer/PreferencesPanel/VBoxContainer/TabContainer/General/VBoxContainer/GuiInterfaceBoldFont" unique_id=1369399185]
-layout_mode = 2
-text = "Bold font"
-
-[node name="FileOption" parent="HSplitContainer/PreferencesPanel/VBoxContainer/TabContainer/General/VBoxContainer/GuiInterfaceBoldFont" unique_id=174157426 instance=ExtResource("7_btfio")]
-custom_minimum_size = Vector2(200, 0)
-layout_mode = 2
-size_flags_horizontal = 10
-config_variable = "bold_font"
-file_picker_filters = PackedStringArray("*.ttf; TrueType Font file", "*.otf; OpenType Font file")
-
-[node name="GuiInterfaceCodeFont" type="HBoxContainer" parent="HSplitContainer/PreferencesPanel/VBoxContainer/TabContainer/General/VBoxContainer" unique_id=1031857314]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="HSplitContainer/PreferencesPanel/VBoxContainer/TabContainer/General/VBoxContainer/GuiInterfaceCodeFont" unique_id=996760035]
-layout_mode = 2
-text = "Code font"
-
-[node name="FileOption" parent="HSplitContainer/PreferencesPanel/VBoxContainer/TabContainer/General/VBoxContainer/GuiInterfaceCodeFont" unique_id=1529128835 instance=ExtResource("7_btfio")]
-custom_minimum_size = Vector2(200, 0)
-layout_mode = 2
-size_flags_horizontal = 10
-file_picker_filters = PackedStringArray("*.ttf; TrueType Font file", "*.otf; OpenType Font file")
-
-[node name="GuiInterfaceUseSystemFonts" type="HBoxContainer" parent="HSplitContainer/PreferencesPanel/VBoxContainer/TabContainer/General/VBoxContainer" unique_id=800559765]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="HSplitContainer/PreferencesPanel/VBoxContainer/TabContainer/General/VBoxContainer/GuiInterfaceUseSystemFonts" unique_id=1685829793]
-layout_mode = 2
-text = "Use system fonts"
-
-[node name="UiUseSystemFonts" parent="HSplitContainer/PreferencesPanel/VBoxContainer/TabContainer/General/VBoxContainer/GuiInterfaceUseSystemFonts" unique_id=422645964 instance=ExtResource("1")]
-custom_minimum_size = Vector2(200, 0)
-layout_mode = 2
-size_flags_horizontal = 10
-tooltip_text = "When enabled, system fonts will be used instead of Material Maker's built-in fonts or custom fonts set in preferences."
-text = "On"
-flat = false
-config_variable = "ui_use_system_font"
-
-[node name="GuiInterfaceFontSize" type="HBoxContainer" parent="HSplitContainer/PreferencesPanel/VBoxContainer/TabContainer/General/VBoxContainer" unique_id=1611075044]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="HSplitContainer/PreferencesPanel/VBoxContainer/TabContainer/General/VBoxContainer/GuiInterfaceFontSize" unique_id=1849142327]
-layout_mode = 2
-text = "UI font size"
-
-[node name="UiFontSize" parent="HSplitContainer/PreferencesPanel/VBoxContainer/TabContainer/General/VBoxContainer/GuiInterfaceFontSize" unique_id=2069314067 instance=ExtResource("3")]
-custom_minimum_size = Vector2(200, 24)
-layout_mode = 2
-size_flags_horizontal = 10
-tooltip_text = "A higher FPS limit may result in smoother operation but may use more CPU/GPU resources.
-Higher values may increase power usage, leading to reduced battery life on laptops."
-config_variable = "ui_font_size"
-value = 16.0
-min_value = 16.0
-max_value = 48.0
-step = 1.0
-float_only = true
-
-[node name="GuiInterfaceCodeFontSize" type="HBoxContainer" parent="HSplitContainer/PreferencesPanel/VBoxContainer/TabContainer/General/VBoxContainer" unique_id=1021828129]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="HSplitContainer/PreferencesPanel/VBoxContainer/TabContainer/General/VBoxContainer/GuiInterfaceCodeFontSize" unique_id=326623061]
-layout_mode = 2
-text = "Code font size"
-
-[node name="UiCodeFontSize" parent="HSplitContainer/PreferencesPanel/VBoxContainer/TabContainer/General/VBoxContainer/GuiInterfaceCodeFontSize" unique_id=539469105 instance=ExtResource("3")]
-custom_minimum_size = Vector2(200, 24)
-layout_mode = 2
-size_flags_horizontal = 10
-tooltip_text = "A higher FPS limit may result in smoother operation but may use more CPU/GPU resources.
-Higher values may increase power usage, leading to reduced battery life on laptops."
-config_variable = "ui_code_font_size"
-value = 16.0
-min_value = 16.0
-max_value = 48.0
-step = 1.0
-float_only = true
-
 [node name="WinTabletDriverSpacer" type="Control" parent="HSplitContainer/PreferencesPanel/VBoxContainer/TabContainer/General/VBoxContainer" unique_id=1126899447]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 10)
@@ -481,11 +365,134 @@ float_only = true
 custom_minimum_size = Vector2(0, 10)
 layout_mode = 2
 
-[node name="Bake" type="ScrollContainer" parent="HSplitContainer/PreferencesPanel/VBoxContainer/TabContainer" unique_id=289908114]
+[node name="Theme" type="ScrollContainer" parent="HSplitContainer/PreferencesPanel/VBoxContainer/TabContainer" unique_id=1111133403]
 visible = false
 layout_mode = 2
 theme_type_variation = &"MM_PreferenceTab"
 metadata/_tab_index = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HSplitContainer/PreferencesPanel/VBoxContainer/TabContainer/Theme" unique_id=1231307394]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="SectionDisplayFont" type="Label" parent="HSplitContainer/PreferencesPanel/VBoxContainer/TabContainer/Theme/VBoxContainer" unique_id=486879697]
+layout_mode = 2
+text = "Display Fonts (requires restart)"
+label_settings = SubResource("LabelSettings_btfio")
+
+[node name="GuiInterfaceMainFont" type="HBoxContainer" parent="HSplitContainer/PreferencesPanel/VBoxContainer/TabContainer/Theme/VBoxContainer" unique_id=758900584]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="HSplitContainer/PreferencesPanel/VBoxContainer/TabContainer/Theme/VBoxContainer/GuiInterfaceMainFont" unique_id=1822476730]
+layout_mode = 2
+text = "Main Font"
+
+[node name="FileOption" parent="HSplitContainer/PreferencesPanel/VBoxContainer/TabContainer/Theme/VBoxContainer/GuiInterfaceMainFont" unique_id=1399365702 instance=ExtResource("7_btfio")]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+size_flags_horizontal = 10
+config_variable = "main_font"
+file_picker_filters = PackedStringArray("*.ttf; TrueType Font file", "*.otf; OpenType Font file")
+
+[node name="GuiInterfaceMediumFont" type="HBoxContainer" parent="HSplitContainer/PreferencesPanel/VBoxContainer/TabContainer/Theme/VBoxContainer" unique_id=34572927]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="HSplitContainer/PreferencesPanel/VBoxContainer/TabContainer/Theme/VBoxContainer/GuiInterfaceMediumFont" unique_id=914702841]
+layout_mode = 2
+text = "Medium font"
+
+[node name="FileOption" parent="HSplitContainer/PreferencesPanel/VBoxContainer/TabContainer/Theme/VBoxContainer/GuiInterfaceMediumFont" unique_id=1544432129 instance=ExtResource("7_btfio")]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+size_flags_horizontal = 10
+config_variable = "medium_font"
+file_picker_filters = PackedStringArray("*.ttf; TrueType Font file", "*.otf; OpenType Font file")
+
+[node name="GuiInterfaceBoldFont" type="HBoxContainer" parent="HSplitContainer/PreferencesPanel/VBoxContainer/TabContainer/Theme/VBoxContainer" unique_id=1462088612]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="HSplitContainer/PreferencesPanel/VBoxContainer/TabContainer/Theme/VBoxContainer/GuiInterfaceBoldFont" unique_id=1490863117]
+layout_mode = 2
+text = "Bold font"
+
+[node name="FileOption" parent="HSplitContainer/PreferencesPanel/VBoxContainer/TabContainer/Theme/VBoxContainer/GuiInterfaceBoldFont" unique_id=945782835 instance=ExtResource("7_btfio")]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+size_flags_horizontal = 10
+config_variable = "bold_font"
+file_picker_filters = PackedStringArray("*.ttf; TrueType Font file", "*.otf; OpenType Font file")
+
+[node name="GuiInterfaceCodeFont" type="HBoxContainer" parent="HSplitContainer/PreferencesPanel/VBoxContainer/TabContainer/Theme/VBoxContainer" unique_id=1481852751]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="HSplitContainer/PreferencesPanel/VBoxContainer/TabContainer/Theme/VBoxContainer/GuiInterfaceCodeFont" unique_id=1662114990]
+layout_mode = 2
+text = "Code font"
+
+[node name="FileOption" parent="HSplitContainer/PreferencesPanel/VBoxContainer/TabContainer/Theme/VBoxContainer/GuiInterfaceCodeFont" unique_id=1735527225 instance=ExtResource("7_btfio")]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+size_flags_horizontal = 10
+file_picker_filters = PackedStringArray("*.ttf; TrueType Font file", "*.otf; OpenType Font file")
+
+[node name="GuiInterfaceUseSystemFonts" type="HBoxContainer" parent="HSplitContainer/PreferencesPanel/VBoxContainer/TabContainer/Theme/VBoxContainer" unique_id=1096584127]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="HSplitContainer/PreferencesPanel/VBoxContainer/TabContainer/Theme/VBoxContainer/GuiInterfaceUseSystemFonts" unique_id=817621155]
+layout_mode = 2
+text = "Use system fonts"
+
+[node name="UiUseSystemFonts" parent="HSplitContainer/PreferencesPanel/VBoxContainer/TabContainer/Theme/VBoxContainer/GuiInterfaceUseSystemFonts" unique_id=270406247 instance=ExtResource("1")]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+size_flags_horizontal = 10
+tooltip_text = "When enabled, system fonts will be used instead of Material Maker's built-in fonts or custom fonts set in preferences."
+text = "On"
+flat = false
+config_variable = "ui_use_system_font"
+
+[node name="GuiInterfaceFontSize" type="HBoxContainer" parent="HSplitContainer/PreferencesPanel/VBoxContainer/TabContainer/Theme/VBoxContainer" unique_id=197296407]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="HSplitContainer/PreferencesPanel/VBoxContainer/TabContainer/Theme/VBoxContainer/GuiInterfaceFontSize" unique_id=83511662]
+layout_mode = 2
+text = "UI font size"
+
+[node name="UiFontSize" parent="HSplitContainer/PreferencesPanel/VBoxContainer/TabContainer/Theme/VBoxContainer/GuiInterfaceFontSize" unique_id=2037581063 instance=ExtResource("3")]
+custom_minimum_size = Vector2(200, 24)
+layout_mode = 2
+size_flags_horizontal = 10
+config_variable = "ui_font_size"
+value = 16.0
+min_value = 16.0
+max_value = 48.0
+step = 1.0
+float_only = true
+
+[node name="GuiInterfaceCodeFontSize" type="HBoxContainer" parent="HSplitContainer/PreferencesPanel/VBoxContainer/TabContainer/Theme/VBoxContainer" unique_id=1343680422]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="HSplitContainer/PreferencesPanel/VBoxContainer/TabContainer/Theme/VBoxContainer/GuiInterfaceCodeFontSize" unique_id=1460436146]
+layout_mode = 2
+text = "Code font size"
+
+[node name="UiCodeFontSize" parent="HSplitContainer/PreferencesPanel/VBoxContainer/TabContainer/Theme/VBoxContainer/GuiInterfaceCodeFontSize" unique_id=336987241 instance=ExtResource("3")]
+custom_minimum_size = Vector2(200, 24)
+layout_mode = 2
+size_flags_horizontal = 10
+config_variable = "ui_code_font_size"
+value = 16.0
+min_value = 16.0
+max_value = 48.0
+step = 1.0
+float_only = true
+
+[node name="Bake" type="ScrollContainer" parent="HSplitContainer/PreferencesPanel/VBoxContainer/TabContainer" unique_id=289908114]
+visible = false
+layout_mode = 2
+theme_type_variation = &"MM_PreferenceTab"
+metadata/_tab_index = 2
 
 [node name="VBoxContainer" type="VBoxContainer" parent="HSplitContainer/PreferencesPanel/VBoxContainer/TabContainer/Bake" unique_id=629545617]
 layout_mode = 2
@@ -566,7 +573,7 @@ float_only = true
 visible = false
 layout_mode = 2
 theme_type_variation = &"MM_PreferenceTab"
-metadata/_tab_index = 2
+metadata/_tab_index = 3
 
 [node name="VBoxContainer" type="VBoxContainer" parent="HSplitContainer/PreferencesPanel/VBoxContainer/TabContainer/Graph" unique_id=1157689446]
 layout_mode = 2
@@ -624,7 +631,7 @@ config_variable = "node_close_button"
 visible = false
 layout_mode = 2
 theme_type_variation = &"MM_PreferenceTab"
-metadata/_tab_index = 3
+metadata/_tab_index = 4
 
 [node name="VBoxContainer" type="VBoxContainer" parent="HSplitContainer/PreferencesPanel/VBoxContainer/TabContainer/Export" unique_id=1887967844]
 layout_mode = 2
