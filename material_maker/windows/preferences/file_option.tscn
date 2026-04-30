@@ -1,4 +1,4 @@
-[gd_scene format=3 uid="uid://der02x3y0072q"]
+[gd_scene format=3 uid="uid://b7ko0gpbs5mqa"]
 
 [ext_resource type="Script" uid="uid://bv04peqautr3c" path="res://material_maker/windows/preferences/file_option.gd" id="1_3nbpc"]
 [ext_resource type="PackedScene" uid="uid://cfyio0a1b27t0" path="res://material_maker/widgets/file_picker_button/file_picker_button.tscn" id="2_8arj1"]
@@ -28,3 +28,4 @@ size_flags_horizontal = 3
 
 [connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
 [connection signal="pressed" from="Reset" to="." method="_on_reset_pressed"]
+[connection signal="file_selected" from="FilePickerButton" to="." method="_on_file_picker_button_file_selected"]
