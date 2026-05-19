@@ -64,8 +64,9 @@ func on_parameter_changed(n : String, v : Variant) -> void:
 		sync_io_slots()
 		notify_redraw()
 
-func _draw_port(_slot_index : int, pos : Vector2i, _left : bool, color : Color) -> void:
-	draw_circle(pos, 5, color, true, -1, true)
+func _draw_port(_slot_index : int, pos : Vector2i, left : bool, color : Color) -> void:
+	if is_portal_in() and left or is_portal_out():
+		draw_circle(pos, 5, color, true, -1, true)
 
 func _exit_tree() -> void:
 	var source_node : MMGraphPortal = get_link_source(get_link(), get_parent())
@@ -175,7 +176,8 @@ func on_connections_changed() -> void:
 				type = node.get_slot_type_right(c.from_port)
 				port_type = node.generator.get_output_defs()[c.from_port].type
 				break
-		set_slot(0, true, type, color, false, type, color)
+		set_slot(0, true, type, color, true, -1, color)
+		generator.notify_output_change(0)
 		generator.port_type = port_type
 	sync_io_slots()
 

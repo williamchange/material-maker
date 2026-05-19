@@ -29,7 +29,7 @@ func get_input_defs() -> Array:
 	return [ { type=port_type, shortdesc="" } ] if io == Portal.IN else []
 
 func get_output_defs(_show_hidden : bool = false) -> Array:
-	return [ { type=port_type, shortdesc="" } ] if io == Portal.OUT else []
+	return [ { type=port_type, shortdesc="" } ]
 
 func get_type() -> String:
 	return "portal"
@@ -65,6 +65,9 @@ func follow_input(_input_index : int) -> Array:
 
 func update_source() -> void:
 	source = null
+	if io == Portal.IN:
+		source = get_source(0)
+		return
 	if get_parent() == null:
 		return
 	for w in get_parent().get_children():
