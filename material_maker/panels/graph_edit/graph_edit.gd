@@ -157,9 +157,10 @@ func _input(event : InputEvent) -> void:
 						node.set_deferred("selected", true)
 
 	# Grab graph focus for quick bar shortcuts to work properly
+	# (i.e. returning to graph after interacting with other panels)
 	if get_global_rect().has_point(get_global_mouse_position()):
 		if event is InputEventKey and event.unicode >= KEY_0 and event.unicode <= KEY_9:
-			if get_nodes_under_mouse().is_empty():
+			if event.pressed and get_nodes_under_mouse().is_empty():
 				grab_focus()
 
 func _gui_input(event) -> void:
