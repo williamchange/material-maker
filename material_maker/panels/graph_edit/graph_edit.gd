@@ -35,6 +35,16 @@ var has_grab : bool = false:
 		else:
 			Input.set_custom_mouse_cursor(null)
 
+var scale_from : Vector2 = Vector2.ZERO
+var scale_center : Vector2 = Vector2.ZERO
+var node_pos : Dictionary[GraphNode, Vector2]
+var has_scale : bool = false:
+	set(v):
+		has_scale = v
+		scale_from = get_local_mouse_position()
+		for node in get_selected_nodes():
+			node_pos[node] = node.position_offset
+
 const PREVIEW_COUNT = 2
 var current_preview : Array = [ null, null ]
 var locked_preview : Array = [ null, null ]
@@ -150,6 +160,7 @@ func _input(event : InputEvent) -> void:
 				and event.button_index == MOUSE_BUTTON_LEFT):
 			accept_event()
 			has_grab = false
+			has_scale = false
 			# Prevent unintended control activations on grab release
 			for node in selected_nodes:
 				if event.pressed:
@@ -157,6 +168,25 @@ func _input(event : InputEvent) -> void:
 					# keep node selection on release in an empty area
 					if get_nodes_under_mouse().is_empty():
 						node.set_deferred("selected", true)
+	
+	if has_scale:
+		scale_center = Vector2.ZERO
+		var selected : Array = get_selected_nodes()
+		for n in selected:
+			scale_center += n.position_offset
+		scale_center /= selected.size()
+		scale_center -= scroll_offset
+		
+		var dist_to_center = scale_from.distance_squared_to(scale_center)
+		var curr_dist_to_center = get_local_mouse_position().distance_squared_to(scale_center)
+		clamp(curr_dist_to_center/dist_to_center, 0.0, 1.0)
+		
+		
+		for node in selected:
+			node.position_offset = node_pos[node].lerp(scale_center+scroll_offset, 1.0 - curr_dist_to_center/dist_to_center)
+			
+		
+		queue_redraw.call_deferred()
 
 	# Grab graph focus for quick bar shortcuts to work properly
 	# (i.e. returning to graph after interacting with other panels)
@@ -189,8 +219,8 @@ func _gui_input(event) -> void:
 			connections_to_cut.clear()
 		Input.set_custom_mouse_cursor(null)
 		drag_cut_line.clear()
-		conns.clear()
 		queue_redraw()
+		conns.clear()
 	elif event.is_action_released("ui_lasso_select", true):
 		for node in get_children():
 			if node is GraphElement:
@@ -268,6 +298,7 @@ func _gui_input(event) -> void:
 			if event.button_index == MOUSE_BUTTON_LEFT:
 				if event.pressed:
 					has_grab = false
+					has_scale = false
 				if event.double_click:
 					if get_nodes_under_mouse().is_empty():
 						on_ButtonUp_pressed()
@@ -305,8 +336,12 @@ func _gui_input(event) -> void:
 				KEY_G:
 					if not get_selected_nodes().is_empty():
 						has_grab = true
+				KEY_S:
+					if not get_selected_nodes().is_empty():
+						has_scale = true
 				KEY_ESCAPE:
 					has_grab = false
+					has_scale = false
 				_ when event.unicode >= KEY_0 and event.unicode <= KEY_9:
 					if get_nodes_under_mouse().is_empty():
 						quick_bar_shortcuts(event)
@@ -370,6 +405,9 @@ func get_padded_node_rect(graph_node:GraphNode) -> Rect2:
 	return Rect2(rect.position, rect.size)
 
 func _draw() -> void:
+	if has_scale:
+		draw_line(get_local_mouse_position(), scale_center, Color.RED, 1.0, true)
+		draw_circle(scale_center, 10.0, Color.RED)
 	if drag_cut_line.size() > 1:
 		draw_polyline(drag_cut_line, get_theme_color("connection_knife", "GraphEdit"), 1.0)
 	if lasso_points.size() > 1:
