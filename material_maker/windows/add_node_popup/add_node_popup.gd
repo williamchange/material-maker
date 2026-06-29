@@ -15,6 +15,9 @@ var qc_is_output : bool
 
 @onready var library_manager = get_node("/root/MainWindow/NodeLibraryManager")
 
+var hovered_index : int = 0
+var previous_index : int = 0
+
 func get_current_graph():
 	return get_parent().get_current_graph_edit()
 
@@ -209,6 +212,21 @@ func _on_list_gui_input(event: InputEvent) -> void:
 		var idx: int = %List.get_item_at_position(%List.get_local_mouse_position(), true)
 		if idx != -1:
 			_on_list_item_activated(idx)
+	elif event is InputEventMouseMotion:
+		# Workaround for godot issue 120730
+		var current : int = %List.get_item_at_position(event.position)
+		previous_index = hovered_index
+		hovered_index = current
+		if hovered_index != previous_index and previous_index < %List.item_count and previous_index != -1:
+			var data : Dictionary = %List.get_item_metadata(previous_index)
+			if data.has("item"):
+				var section : String = data.item.tree_item.get_slice("/", 0)
+				var prev_color : Color = library_manager.get_section_color(section)
+				prev_color = prev_color.lerp(get_theme_color("font_color", "Label"), 0.5)
+				%List.set_item_custom_fg_color(previous_index, prev_color)
+		elif previous_index != -1 and %List.item_count:
+			var font_hovered_col : Color = get_theme_color("font_hovered_color")
+			%List.set_item_custom_fg_color(previous_index, font_hovered_col)
 
 
 func get_list_drag_data(m_position):
