@@ -1239,7 +1239,7 @@ func get_doc_dir() -> String:
 	# We can use a globalized `res://` path here as the project isn't exported.
 	var devel_doc_path = ProjectSettings.globalize_path("res://material_maker/doc/_build/html")
 	for p in [ release_doc_path, devel_doc_path ]:
-		if FileAccess.file_exists(p+"/index.html"):
+		if FileAccess.file_exists(p.path_join("index.htm")):
 			return p
 	return ""
 
