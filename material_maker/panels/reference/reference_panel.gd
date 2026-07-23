@@ -111,15 +111,7 @@ func _on_add_image_button_pressed() -> void:
 	dialog.min_size = Vector2(500, 500)
 	dialog.access = FileDialog.ACCESS_FILESYSTEM
 	dialog.file_mode = FileDialog.FILE_MODE_OPEN_FILE
-	dialog.add_filter("*.bmp;BMP Image")
-	dialog.add_filter("*.exr;EXR Image")
-	dialog.add_filter("*.hdr;Radiance HDR Image")
-	dialog.add_filter("*.jpg,*.jpeg;JPEG Image")
-	dialog.add_filter("*.png;PNG Image")
-	dialog.add_filter("*.svg;SVG Image")
-	dialog.add_filter("*.tga;TGA Image")
-	dialog.add_filter("*.webp;WebP Image")
-	dialog.add_filter("*.dds;DirectDraw Surface Image")
+	mm_globals.add_image_file_filters(dialog)
 	var files = await dialog.select_files()
 	if files.size() == 1:
 		add_reference(files[0])

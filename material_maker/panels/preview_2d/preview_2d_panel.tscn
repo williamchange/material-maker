@@ -1,8 +1,9 @@
-[gd_scene load_steps=30 format=3 uid="uid://b7x7yqgsurxhv"]
+[gd_scene format=3 uid="uid://b7x7yqgsurxhv"]
 
 [ext_resource type="Texture2D" uid="uid://c0j4px4n72di5" path="res://material_maker/icons/icons.tres" id="1"]
 [ext_resource type="PackedScene" uid="uid://est6pi7xbptp" path="res://material_maker/panels/preview_2d/control_point.tscn" id="2"]
 [ext_resource type="PackedScene" uid="uid://bb6iar0tbj2qt" path="res://material_maker/panels/preview_2d/preview_2d.tscn" id="3"]
+[ext_resource type="Script" uid="uid://dnjnks0ad4u7t" path="res://material_maker/panels/preview_2d/overlay_image.gd" id="3_63a3x"]
 [ext_resource type="Script" uid="uid://cjtefdp8oh215" path="res://material_maker/panels/preview_2d/axes.gd" id="3_r76ng"]
 [ext_resource type="Script" uid="uid://cj476fi1ociuw" path="res://material_maker/panels/preview_2d/preview_2d_panel.gd" id="4"]
 [ext_resource type="PackedScene" uid="uid://djura7a50b2aq" path="res://material_maker/widgets/polygon_edit/polygon_editor.tscn" id="4_gd40d"]
@@ -19,7 +20,7 @@
 [ext_resource type="Script" uid="uid://pielyrq85378" path="res://material_maker/panels/preview_2d/two_icon_toggle_button.gd" id="17_07kc5"]
 [ext_resource type="FontFile" uid="uid://lro0qdrhfytt" path="res://material_maker/theme/font_rubik/Rubik-Light.ttf" id="18_kn37y"]
 
-[sub_resource type="Shader" id="Shader_0mwcg"]
+[sub_resource type="Shader" id="Shader_63a3x"]
 resource_local_to_scene = true
 code = "shader_type canvas_item;
 
@@ -47,9 +48,9 @@ void fragment() {
 }
 "
 
-[sub_resource type="ShaderMaterial" id="2"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_083ld"]
 resource_local_to_scene = true
-shader = SubResource("Shader_0mwcg")
+shader = SubResource("Shader_63a3x")
 shader_parameter/preview_2d_size = Vector2(100, 100)
 shader_parameter/preview_2d_scale = 1.655
 shader_parameter/preview_2d_center = Vector2(0.46, 0.56)
@@ -95,8 +96,8 @@ keycode = 69
 [sub_resource type="Shortcut" id="Shortcut_llf02"]
 events = [SubResource("InputEventKey_rhw4u")]
 
-[node name="Preview2D" node_paths=PackedStringArray("shortcut_context") instance=ExtResource("3")]
-material = SubResource("2")
+[node name="Preview2D" unique_id=540966315 node_paths=PackedStringArray("shortcut_context") instance=ExtResource("3")]
+material = SubResource("ShaderMaterial_083ld")
 custom_minimum_size = Vector2(100, 100)
 offset_left = 8.0
 offset_top = -5.0
@@ -165,21 +166,35 @@ void fragment() {
 }
 "
 
-[node name="Guides" type="Control" parent="." index="0"]
-anchors_preset = 0
+[node name="OverlayImage" type="Control" parent="." index="0" unique_id=2072755956]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("3_63a3x")
+
+[node name="Guides" type="Control" parent="." index="1" unique_id=1640201053]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("5")
 
-[node name="Axes" type="Control" parent="." index="1"]
+[node name="Axes" type="Control" parent="." index="2" unique_id=185986073]
 visible = false
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
 script = ExtResource("3_r76ng")
 
-[node name="PolygonEditor" parent="." index="2" instance=ExtResource("4_gd40d")]
+[node name="PolygonEditor" parent="." index="3" unique_id=1599249995 instance=ExtResource("4_gd40d")]
 visible = false
 layout_mode = 1
 offset_right = 0.0
@@ -187,25 +202,25 @@ offset_bottom = 0.0
 draw_area = false
 auto_rescale = false
 
-[node name="SplinesEditor" parent="." index="3" instance=ExtResource("5_5hlfo")]
+[node name="SplinesEditor" parent="." index="4" unique_id=886693833 instance=ExtResource("5_5hlfo")]
 visible = false
 layout_mode = 1
 draw_area = false
 draw_control_lines = true
 
-[node name="PixelsEditor" parent="." index="4" instance=ExtResource("6_m4663")]
+[node name="PixelsEditor" parent="." index="5" unique_id=10980695 instance=ExtResource("6_m4663")]
 visible = false
 layout_mode = 1
 draw_area = false
 alpha = 0.5
 
-[node name="LatticeEditor" parent="." index="5" instance=ExtResource("7_u2w4r")]
+[node name="LatticeEditor" parent="." index="6" unique_id=367080031 instance=ExtResource("7_u2w4r")]
 visible = false
 layout_mode = 1
 offset_right = 0.0
 offset_bottom = 0.0
 
-[node name="P1" parent="." index="6" instance=ExtResource("2")]
+[node name="P1" parent="." index="7" unique_id=542178199 instance=ExtResource("2")]
 visible = false
 self_modulate = Color(1, 0.466667, 0, 1)
 layout_mode = 0
@@ -215,7 +230,7 @@ offset_right = 37.0
 offset_bottom = 61.0
 texture = SubResource("3")
 
-[node name="P2" parent="." index="7" instance=ExtResource("2")]
+[node name="P2" parent="." index="8" unique_id=980175147 instance=ExtResource("2")]
 visible = false
 self_modulate = Color(0, 0.505882, 1, 1)
 layout_mode = 0
@@ -225,7 +240,7 @@ offset_right = 37.0
 offset_bottom = 61.0
 texture = SubResource("3")
 
-[node name="P11" parent="." index="8" instance=ExtResource("2")]
+[node name="P11" parent="." index="9" unique_id=101087972 instance=ExtResource("2")]
 visible = false
 self_modulate = Color(0, 0.505882, 1, 1)
 layout_mode = 0
@@ -237,7 +252,7 @@ texture = SubResource("3")
 parent_control = "P1"
 apply_local_transform = true
 
-[node name="RadiusP11" parent="." index="9" instance=ExtResource("2")]
+[node name="RadiusP11" parent="." index="10" unique_id=1016297993 instance=ExtResource("2")]
 visible = false
 self_modulate = Color(1, 0.631373, 0, 1)
 layout_mode = 0
@@ -250,7 +265,7 @@ texture = SubResource("4")
 parent_control = "P11"
 control_type = 2
 
-[node name="P12" parent="." index="10" instance=ExtResource("2")]
+[node name="P12" parent="." index="11" unique_id=1061211907 instance=ExtResource("2")]
 visible = false
 self_modulate = Color(0, 0.505882, 1, 1)
 layout_mode = 0
@@ -262,7 +277,7 @@ texture = SubResource("3")
 parent_control = "P1"
 apply_local_transform = true
 
-[node name="P3" parent="." index="11" instance=ExtResource("2")]
+[node name="P3" parent="." index="12" unique_id=838868957 instance=ExtResource("2")]
 visible = false
 self_modulate = Color(0, 1, 0.380392, 1)
 layout_mode = 0
@@ -272,7 +287,7 @@ offset_right = 21.0
 offset_bottom = 45.0
 texture = SubResource("4")
 
-[node name="Rect1" parent="." index="12" instance=ExtResource("2")]
+[node name="Rect1" parent="." index="13" unique_id=1165376182 instance=ExtResource("2")]
 visible = false
 self_modulate = Color(1, 0.631373, 0, 1)
 layout_mode = 0
@@ -285,7 +300,7 @@ parent_control = "P1"
 control_type = 1
 apply_local_transform = true
 
-[node name="Radius1" parent="." index="13" instance=ExtResource("2")]
+[node name="Radius1" parent="." index="14" unique_id=715526693 instance=ExtResource("2")]
 visible = false
 self_modulate = Color(1, 0.631373, 0, 1)
 layout_mode = 0
@@ -298,7 +313,7 @@ texture = SubResource("4")
 parent_control = "P1"
 control_type = 2
 
-[node name="Radius2" parent="." index="14" instance=ExtResource("2")]
+[node name="Radius2" parent="." index="15" unique_id=1807246441 instance=ExtResource("2")]
 visible = false
 self_modulate = Color(0, 0.505882, 1, 1)
 layout_mode = 0
@@ -311,7 +326,7 @@ texture = SubResource("4")
 parent_control = "P2"
 control_type = 2
 
-[node name="Radius11" parent="." index="15" instance=ExtResource("2")]
+[node name="Radius11" parent="." index="16" unique_id=1129727254 instance=ExtResource("2")]
 visible = false
 self_modulate = Color(1, 0.631373, 0, 1)
 layout_mode = 0
@@ -324,7 +339,7 @@ texture = SubResource("4")
 parent_control = "Radius1"
 control_type = 2
 
-[node name="Scale1" parent="." index="16" instance=ExtResource("2")]
+[node name="Scale1" parent="." index="17" unique_id=737811020 instance=ExtResource("2")]
 visible = false
 self_modulate = Color(1, 0.631373, 0, 1)
 layout_mode = 0
@@ -337,7 +352,7 @@ texture = SubResource("4")
 parent_control = "P1"
 control_type = 3
 
-[node name="RotateScale1" parent="." index="17" instance=ExtResource("2")]
+[node name="RotateScale1" parent="." index="18" unique_id=650935982 instance=ExtResource("2")]
 visible = false
 self_modulate = Color(1, 0.631373, 0, 1)
 layout_mode = 0
@@ -350,7 +365,7 @@ texture = SubResource("4")
 parent_control = "P1"
 control_type = 4
 
-[node name="Angle1" parent="." index="18" instance=ExtResource("2")]
+[node name="Angle1" parent="." index="19" unique_id=1570722709 instance=ExtResource("2")]
 visible = false
 self_modulate = Color(1, 0.631373, 0, 1)
 layout_mode = 0
@@ -363,7 +378,7 @@ texture = SubResource("4")
 parent_control = "P1"
 control_type = 2
 
-[node name="Angle2" parent="." index="19" instance=ExtResource("2")]
+[node name="Angle2" parent="." index="20" unique_id=259680386 instance=ExtResource("2")]
 visible = false
 self_modulate = Color(1, 0.631373, 0, 1)
 layout_mode = 0
@@ -376,7 +391,7 @@ texture = SubResource("4")
 parent_control = "P1"
 control_type = 2
 
-[node name="Accumulate" type="SubViewport" parent="." index="20"]
+[node name="Accumulate" type="SubViewport" parent="." index="21" unique_id=379652190]
 disable_3d = true
 handle_input_locally = false
 gui_snap_controls_to_pixels = false
@@ -384,12 +399,12 @@ size = Vector2i(2, 2)
 render_target_clear_mode = 1
 render_target_update_mode = 1
 
-[node name="Iteration" type="ColorRect" parent="Accumulate" index="0"]
+[node name="Iteration" type="ColorRect" parent="Accumulate" index="0" unique_id=727047958]
 material = SubResource("6")
 offset_right = 40.0
 offset_bottom = 40.0
 
-[node name="MenuBar" type="ScrollContainer" parent="." index="21"]
+[node name="MenuBar" type="ScrollContainer" parent="." index="22" unique_id=1382668012]
 unique_name_in_owner = true
 clip_contents = false
 layout_mode = 1
@@ -401,20 +416,20 @@ theme_type_variation = &"MM_PanelMenuBackground"
 horizontal_scroll_mode = 3
 vertical_scroll_mode = 0
 
-[node name="HBox" type="HFlowContainer" parent="MenuBar" index="0"]
+[node name="HBox" type="HFlowContainer" parent="MenuBar" index="0" unique_id=1409948193]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="MainMenu" type="PanelContainer" parent="MenuBar/HBox" index="0"]
+[node name="MainMenu" type="PanelContainer" parent="MenuBar/HBox" index="0" unique_id=1863293948]
 layout_mode = 2
 size_flags_vertical = 0
 theme_type_variation = &"MM_PanelMenuBar"
 
-[node name="HBox" type="HBoxContainer" parent="MenuBar/HBox/MainMenu" index="0"]
+[node name="HBox" type="HBoxContainer" parent="MenuBar/HBox/MainMenu" index="0" unique_id=899908951]
 layout_mode = 2
 theme_type_variation = &"MM_PanelMenuBar"
 
-[node name="ResetViewButton" type="Button" parent="MenuBar/HBox/MainMenu/HBox" index="0"]
+[node name="ResetViewButton" type="Button" parent="MenuBar/HBox/MainMenu/HBox" index="0" unique_id=1811920712]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(25, 25)
 layout_mode = 2
@@ -426,7 +441,7 @@ icon_alignment = 1
 script = ExtResource("10_83edi")
 icon_name = "reset_view"
 
-[node name="ViewMenu" type="Button" parent="MenuBar/HBox/MainMenu/HBox" index="1" node_paths=PackedStringArray("shortcut_context")]
+[node name="ViewMenu" type="Button" parent="MenuBar/HBox/MainMenu/HBox" index="1" unique_id=1965638772 node_paths=PackedStringArray("shortcut_context")]
 custom_minimum_size = Vector2(40, 25)
 layout_mode = 2
 tooltip_text = "View"
@@ -437,30 +452,30 @@ button_mask = 3
 script = ExtResource("12_nrhap")
 icon_name = "view"
 
-[node name="ViewMenuPanel" type="PanelContainer" parent="MenuBar/HBox/MainMenu/HBox/ViewMenu" index="0"]
+[node name="ViewMenuPanel" type="PanelContainer" parent="MenuBar/HBox/MainMenu/HBox/ViewMenu" index="0" unique_id=727117833]
 top_level = true
 layout_mode = 0
 offset_left = 493.0
 offset_top = 9.0
-offset_right = 817.0
-offset_bottom = 145.0
+offset_right = 795.0
+offset_bottom = 217.0
 theme_type_variation = &"MM_PanelMenuSubPanel"
 script = ExtResource("13_5w2hy")
 
-[node name="VBox" type="GridContainer" parent="MenuBar/HBox/MainMenu/HBox/ViewMenu/ViewMenuPanel" index="0"]
+[node name="VBox" type="GridContainer" parent="MenuBar/HBox/MainMenu/HBox/ViewMenu/ViewMenuPanel" index="0" unique_id=149162304]
 layout_mode = 2
 columns = 2
 
-[node name="Control" type="Control" parent="MenuBar/HBox/MainMenu/HBox/ViewMenu/ViewMenuPanel/VBox" index="0"]
+[node name="Control" type="Control" parent="MenuBar/HBox/MainMenu/HBox/ViewMenu/ViewMenuPanel/VBox" index="0" unique_id=1774094974]
 visible = false
 layout_mode = 2
 
-[node name="ViewModeLabel" type="Label" parent="MenuBar/HBox/MainMenu/HBox/ViewMenu/ViewMenuPanel/VBox" index="1"]
+[node name="ViewModeLabel" type="Label" parent="MenuBar/HBox/MainMenu/HBox/ViewMenu/ViewMenuPanel/VBox" index="1" unique_id=1273078787]
 layout_mode = 2
 theme_type_variation = &"MM_PanelMenuSubPanelLabel"
 text = "View"
 
-[node name="ViewMode" parent="MenuBar/HBox/MainMenu/HBox/ViewMenu/ViewMenuPanel/VBox" index="2" instance=ExtResource("12_4017l")]
+[node name="ViewMode" parent="MenuBar/HBox/MainMenu/HBox/ViewMenu/ViewMenuPanel/VBox" index="2" unique_id=1270943057 instance=ExtResource("12_4017l")]
 unique_name_in_owner = true
 layout_mode = 2
 selected = 0
@@ -472,12 +487,12 @@ popup/item_1/id = 1
 popup/item_2/text = "Clamp"
 popup/item_2/id = 2
 
-[node name="PostProcessingLabel" type="Label" parent="MenuBar/HBox/MainMenu/HBox/ViewMenu/ViewMenuPanel/VBox" index="3"]
+[node name="PostProcessingLabel" type="Label" parent="MenuBar/HBox/MainMenu/HBox/ViewMenu/ViewMenuPanel/VBox" index="3" unique_id=212159657]
 layout_mode = 2
 theme_type_variation = &"MM_PanelMenuSubPanelLabel"
 text = "Filter"
 
-[node name="PostProcessing" parent="MenuBar/HBox/MainMenu/HBox/ViewMenu/ViewMenuPanel/VBox" index="4" instance=ExtResource("12_4017l")]
+[node name="PostProcessing" parent="MenuBar/HBox/MainMenu/HBox/ViewMenu/ViewMenuPanel/VBox" index="4" unique_id=109227936 instance=ExtResource("12_4017l")]
 unique_name_in_owner = true
 layout_mode = 2
 selected = 0
@@ -495,15 +510,15 @@ popup/item_4/id = 4
 popup/item_5/text = "Lowres 512x512"
 popup/item_5/id = 5
 
-[node name="GuidesLabel" type="Label" parent="MenuBar/HBox/MainMenu/HBox/ViewMenu/ViewMenuPanel/VBox" index="5"]
+[node name="GuidesLabel" type="Label" parent="MenuBar/HBox/MainMenu/HBox/ViewMenu/ViewMenuPanel/VBox" index="5" unique_id=1292446111]
 layout_mode = 2
 theme_type_variation = &"MM_PanelMenuSubPanelLabel"
 text = "Guides"
 
-[node name="BoxContainer" type="BoxContainer" parent="MenuBar/HBox/MainMenu/HBox/ViewMenu/ViewMenuPanel/VBox" index="6"]
+[node name="BoxContainer" type="BoxContainer" parent="MenuBar/HBox/MainMenu/HBox/ViewMenu/ViewMenuPanel/VBox" index="6" unique_id=1484855435]
 layout_mode = 2
 
-[node name="Guides" parent="MenuBar/HBox/MainMenu/HBox/ViewMenu/ViewMenuPanel/VBox/BoxContainer" index="0" instance=ExtResource("12_4017l")]
+[node name="Guides" parent="MenuBar/HBox/MainMenu/HBox/ViewMenu/ViewMenuPanel/VBox/BoxContainer" index="0" unique_id=1003252982 instance=ExtResource("12_4017l")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -518,7 +533,7 @@ popup/item_2/id = 2
 popup/item_3/text = "Grid"
 popup/item_3/id = 3
 
-[node name="CustomGridSize" parent="MenuBar/HBox/MainMenu/HBox/ViewMenu/ViewMenuPanel/VBox/BoxContainer" index="1" instance=ExtResource("14_qr76f")]
+[node name="CustomGridSize" parent="MenuBar/HBox/MainMenu/HBox/ViewMenu/ViewMenuPanel/VBox/BoxContainer" index="1" unique_id=298569222 instance=ExtResource("14_qr76f")]
 unique_name_in_owner = true
 layout_mode = 2
 value = 10.0
@@ -527,22 +542,24 @@ max_value = 32.0
 step = 1.0
 float_only = true
 
-[node name="GuidesColor" type="ColorPickerButton" parent="MenuBar/HBox/MainMenu/HBox/ViewMenu/ViewMenuPanel/VBox/BoxContainer" index="2"]
+[node name="GuidesColor" type="ColorPickerButton" parent="MenuBar/HBox/MainMenu/HBox/ViewMenu/ViewMenuPanel/VBox/BoxContainer" index="2" unique_id=516542514]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(32, 0)
 layout_mode = 2
 
-[node name="AlphaLabel" type="Label" parent="MenuBar/HBox/MainMenu/HBox/ViewMenu/ViewMenuPanel/VBox" index="7"]
+[node name="AlphaLabel" type="Label" parent="MenuBar/HBox/MainMenu/HBox/ViewMenu/ViewMenuPanel/VBox" index="7" unique_id=753305086]
 layout_mode = 2
 theme_type_variation = &"MM_PanelMenuSubPanelLabel"
 text = "Alpha"
 
-[node name="BoxContainer2" type="BoxContainer" parent="MenuBar/HBox/MainMenu/HBox/ViewMenu/ViewMenuPanel/VBox" index="8"]
+[node name="BoxContainer2" type="BoxContainer" parent="MenuBar/HBox/MainMenu/HBox/ViewMenu/ViewMenuPanel/VBox" index="8" unique_id=891864995]
 layout_mode = 2
+size_flags_horizontal = 3
 
-[node name="CheckerBrightness" type="OptionButton" parent="MenuBar/HBox/MainMenu/HBox/ViewMenu/ViewMenuPanel/VBox/BoxContainer2" index="0"]
+[node name="CheckerBrightness" type="OptionButton" parent="MenuBar/HBox/MainMenu/HBox/ViewMenu/ViewMenuPanel/VBox/BoxContainer2" index="0" unique_id=32639620]
 unique_name_in_owner = true
 layout_mode = 2
+size_flags_horizontal = 3
 tooltip_text = "Transparency checkers brightness"
 selected = 1
 item_count = 3
@@ -553,9 +570,10 @@ popup/item_1/id = 1
 popup/item_2/text = "Dark"
 popup/item_2/id = 2
 
-[node name="CheckerSize" type="OptionButton" parent="MenuBar/HBox/MainMenu/HBox/ViewMenu/ViewMenuPanel/VBox/BoxContainer2" index="1"]
+[node name="CheckerSize" type="OptionButton" parent="MenuBar/HBox/MainMenu/HBox/ViewMenu/ViewMenuPanel/VBox/BoxContainer2" index="1" unique_id=414095962]
 unique_name_in_owner = true
 layout_mode = 2
+size_flags_horizontal = 3
 tooltip_text = "Transparency checkers size"
 selected = 1
 item_count = 3
@@ -566,7 +584,79 @@ popup/item_1/id = 1
 popup/item_2/text = "Large"
 popup/item_2/id = 2
 
-[node name="ExportMenu" type="Button" parent="MenuBar/HBox/MainMenu/HBox" index="2" node_paths=PackedStringArray("shortcut_context")]
+[node name="OverlaySpacer" type="Control" parent="MenuBar/HBox/MainMenu/HBox/ViewMenu/ViewMenuPanel/VBox" index="9" unique_id=2099891164]
+custom_minimum_size = Vector2(0, 4)
+layout_mode = 2
+
+[node name="Spacer" type="Control" parent="MenuBar/HBox/MainMenu/HBox/ViewMenu/ViewMenuPanel/VBox" index="10" unique_id=174807119]
+layout_mode = 2
+
+[node name="OverlayLabel" type="Label" parent="MenuBar/HBox/MainMenu/HBox/ViewMenu/ViewMenuPanel/VBox" index="11" unique_id=1812881885]
+layout_mode = 2
+theme_type_variation = &"MM_PanelMenuSubPanelLabel"
+text = "Overlay"
+
+[node name="OverlayLoadUnload" type="Button" parent="MenuBar/HBox/MainMenu/HBox/ViewMenu/ViewMenuPanel/VBox" index="12" unique_id=357956892]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Load/Unload Overlay"
+text = "Load Image"
+
+[node name="OverlayLabel2" type="Label" parent="MenuBar/HBox/MainMenu/HBox/ViewMenu/ViewMenuPanel/VBox" index="13" unique_id=1102525475]
+layout_mode = 2
+theme_type_variation = &"MM_PanelMenuSubPanelLabel"
+text = "Opacity"
+
+[node name="OverlayOpacity" parent="MenuBar/HBox/MainMenu/HBox/ViewMenu/ViewMenuPanel/VBox" index="14" unique_id=1981970165 instance=ExtResource("14_qr76f")]
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Overlay Opacity"
+value = 1.0
+step = 0.01
+float_only = true
+
+[node name="OverlayLabel4" type="Label" parent="MenuBar/HBox/MainMenu/HBox/ViewMenu/ViewMenuPanel/VBox" index="15" unique_id=749756780]
+layout_mode = 2
+theme_type_variation = &"MM_PanelMenuSubPanelLabel"
+text = "Scale"
+
+[node name="OverlayScale" parent="MenuBar/HBox/MainMenu/HBox/ViewMenu/ViewMenuPanel/VBox" index="16" unique_id=1816244684 instance=ExtResource("14_qr76f")]
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Overlay Scale"
+value = 1.0
+max_value = 2.0
+step = 0.01
+float_only = true
+
+[node name="OverlayLabel5" type="Label" parent="MenuBar/HBox/MainMenu/HBox/ViewMenu/ViewMenuPanel/VBox" index="17" unique_id=1998868100]
+layout_mode = 2
+theme_type_variation = &"MM_PanelMenuSubPanelLabel"
+text = "Offset"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MenuBar/HBox/MainMenu/HBox/ViewMenu/ViewMenuPanel/VBox" index="18" unique_id=448095938]
+layout_mode = 2
+
+[node name="OverlayOffsetX" parent="MenuBar/HBox/MainMenu/HBox/ViewMenu/ViewMenuPanel/VBox/HBoxContainer" index="0" unique_id=666992446 instance=ExtResource("14_qr76f")]
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Overlay Offset X"
+value = 0.0
+min_value = -1.0
+step = 0.01
+float_only = true
+
+[node name="OverlayOffsetY" parent="MenuBar/HBox/MainMenu/HBox/ViewMenu/ViewMenuPanel/VBox/HBoxContainer" index="1" unique_id=1452081175 instance=ExtResource("14_qr76f")]
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Overlay Offset Y"
+value = 0.0
+min_value = -1.0
+step = 0.01
+float_only = true
+
+[node name="ExportMenu" type="Button" parent="MenuBar/HBox/MainMenu/HBox" index="2" unique_id=2060489413 node_paths=PackedStringArray("shortcut_context")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(40, 25)
 layout_mode = 2
@@ -578,61 +668,61 @@ button_mask = 3
 script = ExtResource("12_nrhap")
 icon_name = "export"
 
-[node name="ExportMenuPanel" type="PanelContainer" parent="MenuBar/HBox/MainMenu/HBox/ExportMenu" index="0"]
+[node name="ExportMenuPanel" type="PanelContainer" parent="MenuBar/HBox/MainMenu/HBox/ExportMenu" index="0" unique_id=803131200]
 top_level = true
 custom_minimum_size = Vector2(320, 0)
 layout_mode = 0
 offset_left = 491.0
-offset_top = 189.0
+offset_top = 290.0
 offset_right = 896.0
-offset_bottom = 380.0
+offset_bottom = 481.0
 theme_type_variation = &"MM_PanelMenuSubPanel"
 script = ExtResource("16_0fl4g")
 
-[node name="VBox" type="BoxContainer" parent="MenuBar/HBox/MainMenu/HBox/ExportMenu/ExportMenuPanel" index="0"]
+[node name="VBox" type="BoxContainer" parent="MenuBar/HBox/MainMenu/HBox/ExportMenu/ExportMenuPanel" index="0" unique_id=1281600460]
 layout_mode = 2
 vertical = true
 
-[node name="Grid" type="GridContainer" parent="MenuBar/HBox/MainMenu/HBox/ExportMenu/ExportMenuPanel/VBox" index="0"]
+[node name="Grid" type="GridContainer" parent="MenuBar/HBox/MainMenu/HBox/ExportMenu/ExportMenuPanel/VBox" index="0" unique_id=1198499297]
 layout_mode = 2
 columns = 2
 
-[node name="ExportFolderLabel" type="Label" parent="MenuBar/HBox/MainMenu/HBox/ExportMenu/ExportMenuPanel/VBox/Grid" index="0"]
+[node name="ExportFolderLabel" type="Label" parent="MenuBar/HBox/MainMenu/HBox/ExportMenu/ExportMenuPanel/VBox/Grid" index="0" unique_id=1417658804]
 layout_mode = 2
 theme_type_variation = &"MM_PanelMenuSubPanelLabel"
 text = "Folder"
 
-[node name="ExportFolder" type="BoxContainer" parent="MenuBar/HBox/MainMenu/HBox/ExportMenu/ExportMenuPanel/VBox/Grid" index="1"]
+[node name="ExportFolder" type="BoxContainer" parent="MenuBar/HBox/MainMenu/HBox/ExportMenu/ExportMenuPanel/VBox/Grid" index="1" unique_id=1920735204]
 layout_mode = 2
 theme_override_constants/separation = 2
 
-[node name="ExportFolder" type="LineEdit" parent="MenuBar/HBox/MainMenu/HBox/ExportMenu/ExportMenuPanel/VBox/Grid/ExportFolder" index="0"]
+[node name="ExportFolder" type="LineEdit" parent="MenuBar/HBox/MainMenu/HBox/ExportMenu/ExportMenuPanel/VBox/Grid/ExportFolder" index="0" unique_id=1367243268]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_font_sizes/font_size = 15
 
-[node name="ExportFolderButton" type="Button" parent="MenuBar/HBox/MainMenu/HBox/ExportMenu/ExportMenuPanel/VBox/Grid/ExportFolder" index="1"]
+[node name="ExportFolderButton" type="Button" parent="MenuBar/HBox/MainMenu/HBox/ExportMenu/ExportMenuPanel/VBox/Grid/ExportFolder" index="1" unique_id=1395817936]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(25, 25)
 layout_mode = 2
 icon_alignment = 1
 
-[node name="ExportFileLabel" type="Label" parent="MenuBar/HBox/MainMenu/HBox/ExportMenu/ExportMenuPanel/VBox/Grid" index="2"]
+[node name="ExportFileLabel" type="Label" parent="MenuBar/HBox/MainMenu/HBox/ExportMenu/ExportMenuPanel/VBox/Grid" index="2" unique_id=1276721290]
 layout_mode = 2
 size_flags_vertical = 0
 theme_type_variation = &"MM_PanelMenuSubPanelLabel"
 text = "File Name"
 
-[node name="ExportFile" type="BoxContainer" parent="MenuBar/HBox/MainMenu/HBox/ExportMenu/ExportMenuPanel/VBox/Grid" index="3"]
+[node name="ExportFile" type="BoxContainer" parent="MenuBar/HBox/MainMenu/HBox/ExportMenu/ExportMenuPanel/VBox/Grid" index="3" unique_id=613541918]
 layout_mode = 2
 theme_override_constants/separation = 2
 vertical = true
 
-[node name="BoxContainer" type="BoxContainer" parent="MenuBar/HBox/MainMenu/HBox/ExportMenu/ExportMenuPanel/VBox/Grid/ExportFile" index="0"]
+[node name="BoxContainer" type="BoxContainer" parent="MenuBar/HBox/MainMenu/HBox/ExportMenu/ExportMenuPanel/VBox/Grid/ExportFile" index="0" unique_id=978832615]
 layout_mode = 2
 
-[node name="ExportFile" type="LineEdit" parent="MenuBar/HBox/MainMenu/HBox/ExportMenu/ExportMenuPanel/VBox/Grid/ExportFile/BoxContainer" index="0"]
+[node name="ExportFile" type="LineEdit" parent="MenuBar/HBox/MainMenu/HBox/ExportMenu/ExportMenuPanel/VBox/Grid/ExportFile/BoxContainer" index="0" unique_id=1237334948]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -642,7 +732,7 @@ You can use $project, $node, $idx and $resolution to make the file-name auto-adj
 theme_override_font_sizes/font_size = 15
 text = "$project_$node"
 
-[node name="FileType" parent="MenuBar/HBox/MainMenu/HBox/ExportMenu/ExportMenuPanel/VBox/Grid/ExportFile/BoxContainer" index="1" instance=ExtResource("12_4017l")]
+[node name="FileType" parent="MenuBar/HBox/MainMenu/HBox/ExportMenu/ExportMenuPanel/VBox/Grid/ExportFile/BoxContainer" index="1" unique_id=2068528469 instance=ExtResource("12_4017l")]
 unique_name_in_owner = true
 layout_mode = 2
 selected = 0
@@ -652,22 +742,22 @@ popup/item_0/id = 0
 popup/item_1/text = ".exr"
 popup/item_1/id = 1
 
-[node name="ExportFileResultLabel" type="Label" parent="MenuBar/HBox/MainMenu/HBox/ExportMenu/ExportMenuPanel/VBox/Grid/ExportFile" index="1"]
+[node name="ExportFileResultLabel" type="Label" parent="MenuBar/HBox/MainMenu/HBox/ExportMenu/ExportMenuPanel/VBox/Grid/ExportFile" index="1" unique_id=328107643]
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"MM_PanelMenuSubPanelLabel"
 theme_override_fonts/font = SubResource("FontVariation_wkuuo")
 
-[node name="ResolutionLabel" type="Label" parent="MenuBar/HBox/MainMenu/HBox/ExportMenu/ExportMenuPanel/VBox/Grid" index="4"]
+[node name="ResolutionLabel" type="Label" parent="MenuBar/HBox/MainMenu/HBox/ExportMenu/ExportMenuPanel/VBox/Grid" index="4" unique_id=1044842117]
 layout_mode = 2
 theme_type_variation = &"MM_PanelMenuSubPanelLabel"
 text = "Resolution"
 
-[node name="ResolutionSection" type="BoxContainer" parent="MenuBar/HBox/MainMenu/HBox/ExportMenu/ExportMenuPanel/VBox/Grid" index="5"]
+[node name="ResolutionSection" type="BoxContainer" parent="MenuBar/HBox/MainMenu/HBox/ExportMenu/ExportMenuPanel/VBox/Grid" index="5" unique_id=2091446070]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="Resolution" parent="MenuBar/HBox/MainMenu/HBox/ExportMenu/ExportMenuPanel/VBox/Grid/ResolutionSection" index="0" instance=ExtResource("12_4017l")]
+[node name="Resolution" parent="MenuBar/HBox/MainMenu/HBox/ExportMenu/ExportMenuPanel/VBox/Grid/ResolutionSection" index="0" unique_id=269655643 instance=ExtResource("12_4017l")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -692,12 +782,12 @@ popup/item_7/id = 7
 popup/item_8/text = "Custom"
 popup/item_8/id = 8
 
-[node name="CustomResolutionSection" type="BoxContainer" parent="MenuBar/HBox/MainMenu/HBox/ExportMenu/ExportMenuPanel/VBox/Grid/ResolutionSection" index="1"]
+[node name="CustomResolutionSection" type="BoxContainer" parent="MenuBar/HBox/MainMenu/HBox/ExportMenu/ExportMenuPanel/VBox/Grid/ResolutionSection" index="1" unique_id=1664265633]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="CustomResolutionX" parent="MenuBar/HBox/MainMenu/HBox/ExportMenu/ExportMenuPanel/VBox/Grid/ResolutionSection/CustomResolutionSection" index="0" instance=ExtResource("14_qr76f")]
+[node name="CustomResolutionX" parent="MenuBar/HBox/MainMenu/HBox/ExportMenu/ExportMenuPanel/VBox/Grid/ResolutionSection/CustomResolutionSection" index="0" unique_id=1155484220 instance=ExtResource("14_qr76f")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -708,11 +798,11 @@ max_value = 2048.0
 step = 1.0
 float_only = true
 
-[node name="x" type="Label" parent="MenuBar/HBox/MainMenu/HBox/ExportMenu/ExportMenuPanel/VBox/Grid/ResolutionSection/CustomResolutionSection" index="1"]
+[node name="x" type="Label" parent="MenuBar/HBox/MainMenu/HBox/ExportMenu/ExportMenuPanel/VBox/Grid/ResolutionSection/CustomResolutionSection" index="1" unique_id=397878506]
 layout_mode = 2
 text = "x"
 
-[node name="CustomResolutionY" parent="MenuBar/HBox/MainMenu/HBox/ExportMenu/ExportMenuPanel/VBox/Grid/ResolutionSection/CustomResolutionSection" index="2" instance=ExtResource("14_qr76f")]
+[node name="CustomResolutionY" parent="MenuBar/HBox/MainMenu/HBox/ExportMenu/ExportMenuPanel/VBox/Grid/ResolutionSection/CustomResolutionSection" index="2" unique_id=953428523 instance=ExtResource("14_qr76f")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -723,42 +813,42 @@ max_value = 2048.0
 step = 1.0
 float_only = true
 
-[node name="ExportLabel" type="Label" parent="MenuBar/HBox/MainMenu/HBox/ExportMenu/ExportMenuPanel/VBox/Grid" index="6"]
+[node name="ExportLabel" type="Label" parent="MenuBar/HBox/MainMenu/HBox/ExportMenu/ExportMenuPanel/VBox/Grid" index="6" unique_id=563053006]
 layout_mode = 2
 theme_type_variation = &"MM_PanelMenuSubPanelLabel"
 text = "Export"
 
-[node name="BoxContainer" type="GridContainer" parent="MenuBar/HBox/MainMenu/HBox/ExportMenu/ExportMenuPanel/VBox/Grid" index="7"]
+[node name="BoxContainer" type="GridContainer" parent="MenuBar/HBox/MainMenu/HBox/ExportMenu/ExportMenuPanel/VBox/Grid" index="7" unique_id=1868094623]
 layout_mode = 2
 size_flags_horizontal = 3
 columns = 2
 
-[node name="Image" type="Button" parent="MenuBar/HBox/MainMenu/HBox/ExportMenu/ExportMenuPanel/VBox/Grid/BoxContainer" index="0"]
+[node name="Image" type="Button" parent="MenuBar/HBox/MainMenu/HBox/ExportMenu/ExportMenuPanel/VBox/Grid/BoxContainer" index="0" unique_id=1929617985]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 shortcut = SubResource("Shortcut_llf02")
 text = "Image"
 
-[node name="Reference" type="Button" parent="MenuBar/HBox/MainMenu/HBox/ExportMenu/ExportMenuPanel/VBox/Grid/BoxContainer" index="1"]
+[node name="Reference" type="Button" parent="MenuBar/HBox/MainMenu/HBox/ExportMenu/ExportMenuPanel/VBox/Grid/BoxContainer" index="1" unique_id=2093096865]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 text = "To Reference"
 
-[node name="Animation" type="Button" parent="MenuBar/HBox/MainMenu/HBox/ExportMenu/ExportMenuPanel/VBox/Grid/BoxContainer" index="2"]
+[node name="Animation" type="Button" parent="MenuBar/HBox/MainMenu/HBox/ExportMenu/ExportMenuPanel/VBox/Grid/BoxContainer" index="2" unique_id=1436672261]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Animation"
 
-[node name="TAA_Render" type="Button" parent="MenuBar/HBox/MainMenu/HBox/ExportMenu/ExportMenuPanel/VBox/Grid/BoxContainer" index="3"]
+[node name="TAA_Render" type="Button" parent="MenuBar/HBox/MainMenu/HBox/ExportMenu/ExportMenuPanel/VBox/Grid/BoxContainer" index="3" unique_id=1734169591]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 text = "TAA Render"
 
-[node name="ExportNotificationLabel" type="Label" parent="MenuBar/HBox/MainMenu/HBox/ExportMenu/ExportMenuPanel/VBox" index="1"]
+[node name="ExportNotificationLabel" type="Label" parent="MenuBar/HBox/MainMenu/HBox/ExportMenu/ExportMenuPanel/VBox" index="1" unique_id=140925166]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
@@ -767,7 +857,7 @@ theme_override_colors/font_color = Color(0.52, 0.52, 0.52, 1)
 theme_override_fonts/font = SubResource("FontVariation_wkuuo")
 autowrap_mode = 1
 
-[node name="PreviewLocked" type="Button" parent="MenuBar/HBox/MainMenu/HBox" index="3"]
+[node name="PreviewLocked" type="Button" parent="MenuBar/HBox/MainMenu/HBox" index="3" unique_id=297891336]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(25, 25)
 layout_mode = 2
@@ -778,7 +868,7 @@ script = ExtResource("17_07kc5")
 icon_normal_name = "lock_unlocked"
 icon_pressed_name = "lock_locked"
 
-[node name="ComplexParameters" type="OptionButton" parent="MenuBar/HBox/MainMenu/HBox" index="4"]
+[node name="ComplexParameters" type="OptionButton" parent="MenuBar/HBox/MainMenu/HBox" index="4" unique_id=1811263085]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
@@ -786,7 +876,9 @@ layout_mode = 2
 [connection signal="gui_input" from="." to="." method="_on_gui_input"]
 [connection signal="mouse_entered" from="." to="." method="_on_Preview2D_mouse_entered"]
 [connection signal="unhandled_event" from="PolygonEditor" to="." method="_on_gui_input"]
-[connection signal="gui_input" from="PolygonEditor/@Control@42512" to="PolygonEditor/@Control@42512" method="_on_ControlPoint_gui_input"]
+[connection signal="gui_input" from="PolygonEditor/ControlPoint" to="PolygonEditor/ControlPoint" method="_on_ControlPoint_gui_input"]
+[connection signal="mouse_entered" from="PolygonEditor/ControlPoint" to="PolygonEditor/ControlPoint" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="PolygonEditor/ControlPoint" to="PolygonEditor/ControlPoint" method="_on_mouse_exited"]
 [connection signal="unhandled_event" from="SplinesEditor" to="." method="_on_gui_input"]
 [connection signal="unhandled_event" from="PixelsEditor" to="." method="_on_gui_input"]
 [connection signal="unhandled_event" from="LatticeEditor" to="." method="_on_gui_input"]
@@ -798,6 +890,11 @@ layout_mode = 2
 [connection signal="color_changed" from="MenuBar/HBox/MainMenu/HBox/ViewMenu/ViewMenuPanel/VBox/BoxContainer/GuidesColor" to="MenuBar/HBox/MainMenu/HBox/ViewMenu/ViewMenuPanel" method="_on_guides_color_color_changed"]
 [connection signal="item_selected" from="MenuBar/HBox/MainMenu/HBox/ViewMenu/ViewMenuPanel/VBox/BoxContainer2/CheckerBrightness" to="MenuBar/HBox/MainMenu/HBox/ViewMenu/ViewMenuPanel" method="_on_checker_brightness_item_selected"]
 [connection signal="item_selected" from="MenuBar/HBox/MainMenu/HBox/ViewMenu/ViewMenuPanel/VBox/BoxContainer2/CheckerSize" to="MenuBar/HBox/MainMenu/HBox/ViewMenu/ViewMenuPanel" method="_on_checker_size_item_selected"]
+[connection signal="pressed" from="MenuBar/HBox/MainMenu/HBox/ViewMenu/ViewMenuPanel/VBox/OverlayLoadUnload" to="MenuBar/HBox/MainMenu/HBox/ViewMenu/ViewMenuPanel" method="_on_overlay_load_pressed"]
+[connection signal="value_changed" from="MenuBar/HBox/MainMenu/HBox/ViewMenu/ViewMenuPanel/VBox/OverlayOpacity" to="MenuBar/HBox/MainMenu/HBox/ViewMenu/ViewMenuPanel" method="_on_overlay_opacity_value_changed"]
+[connection signal="value_changed" from="MenuBar/HBox/MainMenu/HBox/ViewMenu/ViewMenuPanel/VBox/OverlayScale" to="MenuBar/HBox/MainMenu/HBox/ViewMenu/ViewMenuPanel" method="_on_overlay_scale_value_changed"]
+[connection signal="value_changed" from="MenuBar/HBox/MainMenu/HBox/ViewMenu/ViewMenuPanel/VBox/HBoxContainer/OverlayOffsetX" to="MenuBar/HBox/MainMenu/HBox/ViewMenu/ViewMenuPanel" method="_on_overlay_offset_x_value_changed"]
+[connection signal="value_changed" from="MenuBar/HBox/MainMenu/HBox/ViewMenu/ViewMenuPanel/VBox/HBoxContainer/OverlayOffsetY" to="MenuBar/HBox/MainMenu/HBox/ViewMenu/ViewMenuPanel" method="_on_overlay_offset_y_value_changed"]
 [connection signal="text_changed" from="MenuBar/HBox/MainMenu/HBox/ExportMenu/ExportMenuPanel/VBox/Grid/ExportFolder/ExportFolder" to="MenuBar/HBox/MainMenu/HBox/ExportMenu/ExportMenuPanel" method="_on_export_folder_text_changed"]
 [connection signal="pressed" from="MenuBar/HBox/MainMenu/HBox/ExportMenu/ExportMenuPanel/VBox/Grid/ExportFolder/ExportFolderButton" to="MenuBar/HBox/MainMenu/HBox/ExportMenu/ExportMenuPanel" method="_on_export_folder_button_pressed"]
 [connection signal="text_changed" from="MenuBar/HBox/MainMenu/HBox/ExportMenu/ExportMenuPanel/VBox/Grid/ExportFile/BoxContainer/ExportFile" to="MenuBar/HBox/MainMenu/HBox/ExportMenu/ExportMenuPanel" method="_on_export_file_text_changed"]

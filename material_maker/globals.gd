@@ -237,3 +237,15 @@ func ui_scale_factor() -> float:
 	if get_tree().root.gui_embed_subwindows:
 		return 1.0
 	return get_tree().root.content_scale_factor
+
+## Adds supported image file filters to file dialog.
+func add_image_file_filters(file_dialog : FileDialog) -> void:
+	file_dialog.add_filter("*.bmp;BMP Image")
+	file_dialog.add_filter("*.exr;EXR Image")
+	file_dialog.add_filter("*.hdr;Radiance HDR Image")
+	file_dialog.add_filter("*.jpg,*.jpeg;JPEG Image")
+	file_dialog.add_filter("*.png;PNG Image")
+	file_dialog.add_filter("*.svg;SVG Image")
+	file_dialog.add_filter("*.tga;TGA Image")
+	file_dialog.add_filter("*.webp;WebP Image")
+	file_dialog.add_filter("*.dds;DirectDraw Surface Image")

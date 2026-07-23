@@ -163,8 +163,10 @@ func setup_controls(filter : String = "") -> void:
 			else:
 				float_param_defs.append(p)
 		for c in get_children():
+			print(c)
 			if c.has_method("set_view_rect"):
 				var s : float = min(size.x, size.y)/view_scale
+				print(s)
 				c.set_view_rect(0.5*size-center*s, Vector2(s, s))
 			if c == $PolygonEditor or c == $SplinesEditor or c == $PixelsEditor or c == $LatticeEditor:
 				continue
@@ -255,6 +257,7 @@ func on_resized() -> void:
 	material.set_shader_parameter("preview_2d_scale", view_scale)
 	setup_controls("previous")
 	$Guides.queue_redraw()
+	$OverlayImage.queue_redraw()
 
 
 var dragging : bool = false
