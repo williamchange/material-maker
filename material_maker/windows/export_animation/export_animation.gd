@@ -4,26 +4,26 @@ extends Window
 @export_multiline var shader : String = "" # (String, MULTILINE)
 
 
-var generator
+var generator : MMGenBase
 var output : int
 
-@onready var value_size = $VBox/Settings/Size
-@onready var value_begin = $VBox/Settings/Begin
-@onready var value_end = $VBox/Settings/End
-@onready var value_images = $VBox/Settings/Images
+@onready var value_size : SizeOptionButton = $VBox/Settings/Size
+@onready var value_begin : FloatEdit = $VBox/Settings/Begin
+@onready var value_end : FloatEdit = $VBox/Settings/End
+@onready var value_images : FloatEdit = $VBox/Settings/Images
 @onready var value_spritesheet : OptionButton = $VBox/Settings/Spritesheet
 
-@onready var image_begin = $VBox/Images/HBox/Begin/SubViewport/Image
-@onready var image_end = $VBox/Images/HBox/End/SubViewport/Image
-@onready var image_diff = $VBox/Images/HBox/Animated/Diff
-@onready var image_anim = $VBox/Images/HBox/Animated
-@onready var buffer_images : Array = [ image_begin, image_end, image_anim ]
+@onready var image_begin : ColorRect = $VBox/Images/HBox/Begin/SubViewport/Image
+@onready var image_end : ColorRect = $VBox/Images/HBox/End/SubViewport/Image
+@onready var image_diff : ColorRect = $VBox/Images/HBox/Animated/Diff
+@onready var image_anim : ColorRect = $VBox/Images/HBox/Animated
+@onready var buffer_images : Array[ColorRect] = [ image_begin, image_end, image_anim ]
 
-@onready var animation_player = $VBox/Images/HBox/Animated/AnimationPlayer
-@onready var timer = $VBox/Images/HBox/Animated/Timer
+@onready var animation_player : AnimationPlayer = $VBox/Images/HBox/Animated/AnimationPlayer
+@onready var timer : Timer = $VBox/Images/HBox/Animated/Timer
 
 
-const BUFFER_NAMES = [ "export_animation_buffer_begin", "export_animation_buffer_end", "export_animation_buffer_anim" ]
+const BUFFER_NAMES : Array[String] = [ "export_animation_buffer_begin", "export_animation_buffer_end", "export_animation_buffer_anim" ]
 
 
 func _ready() -> void:
@@ -46,7 +46,7 @@ func _ready() -> void:
 			value_spritesheet.selected = mm_globals.get_config("export_animation_spritesheet")
 
 
-func set_source(g, o) -> void:
+func set_source(g : MMGenBase, o : int) -> void:
 	generator = g
 	output = o
 	var context : MMGenContext = MMGenContext.new()
