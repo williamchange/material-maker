@@ -26,7 +26,7 @@ var output : int
 const BUFFER_NAMES = [ "export_animation_buffer_begin", "export_animation_buffer_end", "export_animation_buffer_anim" ]
 
 
-func _ready():
+func _ready() -> void:
 	content_scale_factor = mm_globals.ui_scale_factor()
 	min_size = $VBox.get_combined_minimum_size() * content_scale_factor
 	for i in range(BUFFER_NAMES.size()):
@@ -46,7 +46,7 @@ func _ready():
 			value_spritesheet.selected = mm_globals.get_config("export_animation_spritesheet")
 
 
-func set_source(g, o):
+func set_source(g, o) -> void:
 	generator = g
 	output = o
 	var context : MMGenContext = MMGenContext.new()
@@ -83,27 +83,27 @@ func set_source(g, o):
 	image_anim.material.set_shader_parameter("begin", begin)
 	image_anim.material.set_shader_parameter("end", end)
 
-func show_diff():
+func show_diff() -> void:
 	if ! animation_player.is_playing() and ! image_diff.visible:
 		animation_player.play("show")
 	timer.stop()
 	timer.start(0)
 
-func _on_Begin_value_changed(value):
+func _on_Begin_value_changed(value) -> void:
 	image_begin.material.set_shader_parameter("elapsed_time", value)
 	image_anim.material.set_shader_parameter("begin", value)
 	show_diff()
 
-func _on_End_value_changed(value):
+func _on_End_value_changed(value) -> void:
 	image_end.material.set_shader_parameter("elapsed_time", value)
 	image_anim.material.set_shader_parameter("end", value)
 	show_diff()
 
-func _on_Timer_timeout():
+func _on_Timer_timeout() -> void:
 	animation_player.play_backwards("show")
 
 
-func _on_Export_pressed():
+func _on_Export_pressed() -> void:
 	var dialog = preload("res://material_maker/windows/file_dialog/file_dialog.tscn").instantiate()
 	dialog.min_size = Vector2(500, 500)
 	dialog.access = FileDialog.ACCESS_FILESYSTEM
@@ -113,7 +113,7 @@ func _on_Export_pressed():
 	var files = await dialog.select_files()
 	if files.size() > 0:
 		var filename : String = files[0]
-		var size : int = 1 << value_size.size_value
+		var resolution : int = 1 << value_size.size_value
 		var begin : float = value_begin.value
 		var end : float = value_end.value
 		var images : int = value_images.value
@@ -128,11 +128,13 @@ func _on_Export_pressed():
 		var filename_fmt
 		if spritesheet_lines != 0:
 			if spritesheet_lines > 0:
+				@warning_ignore("integer_division")
 				spritesheet_columns = (images-1)/spritesheet_lines+1
 			else:
 				spritesheet_columns = -spritesheet_lines
+				@warning_ignore("integer_division")
 				spritesheet_lines = (images-1)/spritesheet_columns+1
-			spritesheet = Image.create(size * spritesheet_columns, size * spritesheet_lines, false, Image.FORMAT_RGBA8)
+			spritesheet = Image.create(resolution * spritesheet_columns, resolution * spritesheet_lines, false, Image.FORMAT_RGBA8)
 		else:
 			var regex : RegEx = RegEx.new()
 			regex.compile("#+")
@@ -148,10 +150,11 @@ func _on_Export_pressed():
 			var time : float = begin+(end-begin)*float(i)/float(images)
 			image_anim.material.set_shader_parameter("begin", time)
 			image_anim.material.set_shader_parameter("end", time)
-			renderer = await renderer.render_material(self, image_anim.material, size, false)
+			renderer = await renderer.render_material(self, image_anim.material, resolution, false)
 			if spritesheet_lines > 0:
 				var image : Image = renderer.get_image()
-				spritesheet.blit_rect(image, Rect2(0, 0, size, size), Vector2(size*(i%spritesheet_columns), size*(i/spritesheet_columns)))
+				@warning_ignore("integer_division")
+				spritesheet.blit_rect(image, Rect2(0, 0, resolution, resolution), Vector2(resolution*(i%spritesheet_columns), resolution*(i/spritesheet_columns)))
 			else:
 				renderer.save_to_file(filename_fmt % (i+1))
 		renderer.release(self)
@@ -172,5 +175,5 @@ func _on_Export_pressed():
 		mm_globals.set_config("export_animation_spritesheet", value_spritesheet.selected)
 
 
-func _on_VBox_minimum_size_changed():
+func _on_VBox_minimum_size_changed() -> void:
 	size = $VBox.size+Vector2(4, 4)
