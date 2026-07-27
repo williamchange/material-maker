@@ -116,7 +116,7 @@ func _on_Export_pressed() -> void:
 		var resolution : int = 1 << value_size.size_value
 		var begin : float = value_begin.value
 		var end : float = value_end.value
-		var images : int = value_images.value
+		var images : int = floor(value_images.value)
 		var spritesheet_lines : int = value_spritesheet.get_item_id(value_spritesheet.selected) 
 		if spritesheet_lines > 500:
 			spritesheet_lines = 1000-spritesheet_lines
