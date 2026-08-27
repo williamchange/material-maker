@@ -106,4 +106,4 @@ func _notification(what: int) -> void:
 		if not is_node_ready():
 			await ready
 		MapExportFileResultLabel.add_theme_font_override("font",
-				FontManager.create_italic_variation(FontManager.main_font))
+				FontUtils.create_italic_variation(FontUtils.main_font))

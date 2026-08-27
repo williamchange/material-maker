@@ -1,7 +1,7 @@
 extends MMGraphNodeMinimal
 class_name MMGraphPortal
 
-var label_font : FontVariation = FontManager.medium_font
+var label_font : FontVariation = FontUtils.medium_font
 
 ## Whether portal's link is being edited
 ## (i.e. its associated LineEdit is visible)

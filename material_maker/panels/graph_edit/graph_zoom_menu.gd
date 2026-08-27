@@ -43,4 +43,4 @@ func update_zoom() -> void:
 
 func _notification(what : int) -> void:
 	if what == NOTIFICATION_THEME_CHANGED:
-		%ZoomLabel.add_theme_font_override("font", FontManager.main_font)
+		%ZoomLabel.add_theme_font_override("font", FontUtils.main_font)

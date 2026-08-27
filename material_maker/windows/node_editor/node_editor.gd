@@ -175,5 +175,5 @@ func _notification(what: int) -> void:
 			# Setup code editor fonts
 			for editor : CodeEdit in [main_code_editor,
 					global_functions_editor, instance_functions_editor]:
-				editor.add_theme_font_override("font", FontManager.code_font)
-				editor.add_theme_font_size_override("font_size", FontManager.ui_code_font_size)
+				editor.add_theme_font_override("font", FontUtils.code_font)
+				editor.add_theme_font_size_override("font_size", FontUtils.ui_code_font_size)

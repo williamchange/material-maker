@@ -1,4 +1,4 @@
-class_name FontManager
+class_name FontUtils
 extends RefCounted
 
 static var main_font : FontVariation = preload("res://material_maker/theme/fonts/ui/main_font.tres")

@@ -20,7 +20,7 @@ func _ready() -> void:
 		var space : Control = Control.new()
 		buttons.add_theme_constant_override("separation", 1)
 		var title_label : Label = get_titlebar_hbox().get_child(0)
-		title_label.add_theme_font_override("font", FontManager.medium_font)
+		title_label.add_theme_font_override("font", FontUtils.medium_font)
 		space.custom_minimum_size = Vector2(4, 0)
 		buttons.add_child(space)
 		get_titlebar_hbox().add_child(buttons)

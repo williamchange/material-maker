@@ -166,9 +166,9 @@ func _ready() -> void:
 			get_window().size = mm_globals.config.get_value("window", "size")
 
 	# Update fonts
-	FontManager.rebuild_fonts()
-	theme.default_font = FontManager.main_font
-	theme.default_font_size = FontManager.ui_font_size
+	FontUtils.rebuild_fonts()
+	theme.default_font = FontUtils.main_font
+	theme.default_font_size = FontUtils.ui_font_size
 
 	# Restore the theme
 	var theme_name: String = "default dark"
@@ -642,15 +642,15 @@ func change_theme(theme_name) -> void:
 	if _theme is EnhancedTheme:
 		_theme.update()
 	theme = _theme
-	theme.default_font = FontManager.main_font
-	theme.set_font("title_font", "TooltipPanel", FontManager.main_font)
-	theme.set_font("font", "TooltipLabel", FontManager.main_font)
+	theme.default_font = FontUtils.main_font
+	theme.set_font("title_font", "TooltipPanel", FontUtils.main_font)
+	theme.set_font("font", "TooltipLabel", FontUtils.main_font)
 
 	if "classic" in theme_name:
-		if not FontManager.has_font_config("main_font"):
-			theme.default_font = FontManager.classic_font
-			theme.set_font("title_font", "TooltipPanel", FontManager.classic_font)
-			theme.set_font("font", "TooltipLabel", FontManager.classic_font)
+		if not FontUtils.has_font_config("main_font"):
+			theme.default_font = FontUtils.classic_font
+			theme.set_font("title_font", "TooltipPanel", FontUtils.classic_font)
+			theme.set_font("font", "TooltipLabel", FontUtils.classic_font)
 		RenderingServer.set_default_clear_color(Color(0.14, 0.17,0.23))
 	else:
 		RenderingServer.set_default_clear_color(

@@ -154,7 +154,7 @@ func update_tree() -> void:
 
 	for section : TreeItem in tree.get_root().get_children():
 		if section.get_children().size():
-			section.set_custom_font(0, FontManager.medium_font)
+			section.set_custom_font(0, FontUtils.medium_font)
 	tree.queue_redraw()
 
 func add_item(item, library_index : int, item_name : String, item_icon = null, item_parent = null, force_expand = false) -> TreeItem:

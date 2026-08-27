@@ -421,7 +421,7 @@ func do_update_preview() -> void:
 func update_title() -> void:
 	title = TranslationServer.translate(generator.get_type_name())
 	if generator == null or generator.minimized:
-		var font : Font = FontManager.medium_font
+		var font : Font = FontUtils.medium_font
 		var max_title_width = 28
 		if font.get_string_size(title).x > max_title_width:
 			for i in range(1, title.length()-1):
@@ -444,7 +444,7 @@ func update_node() -> void:
 	# Rebuild node
 	update_title()
 	var title_label : Label = get_titlebar_hbox().get_child(0)
-	title_label.add_theme_font_override("font", FontManager.medium_font)
+	title_label.add_theme_font_override("font", FontUtils.medium_font)
 	# Resize to minimum
 	size = Vector2(0, 0)
 	# Regex for labels
