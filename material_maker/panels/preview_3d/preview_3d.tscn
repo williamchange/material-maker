@@ -874,6 +874,7 @@ float_only = true
 [connection signal="item_selected" from="MainMenu/HBox/ExportMenu/ExportMenuPanel/VBoxContainer/GenerateMapsSection/ExportFile/BoxContainer/MapFileType" to="MainMenu/HBox/ExportMenu/ExportMenuPanel" method="_on_map_file_type_item_selected"]
 [connection signal="pressed" from="MainMenu/HBox/ExportMenu/ExportMenuPanel/VBoxContainer/GenerateMapButton" to="MainMenu/HBox/ExportMenu/ExportMenuPanel" method="_on_generate_map_button_pressed"]
 [connection signal="minimum_size_changed" from="MainMenu/HBox/PostProcessMenu/PostProcessPanel" to="MainMenu/HBox/PostProcessMenu/PostProcessPanel" method="_on_minimum_size_changed"]
+[connection signal="visibility_changed" from="MainMenu/HBox/PostProcessMenu/PostProcessPanel" to="MainMenu/HBox/PostProcessMenu/PostProcessPanel" method="_on_visibility_changed"]
 [connection signal="minimum_size_changed" from="MainMenu/HBox/PostProcessMenu/PostProcessPanel/ScrollContainer" to="MainMenu/HBox/PostProcessMenu/PostProcessPanel" method="_on_scroll_container_minimum_size_changed"]
 [connection signal="minimum_size_changed" from="MainMenu/HBox/PostProcessMenu/PostProcessPanel/ScrollContainer/VBoxContainer" to="MainMenu/HBox/PostProcessMenu/PostProcessPanel" method="_on_v_box_container_minimum_size_changed"]
 [connection signal="toggled" from="MainMenu/HBox/PostProcessMenu/PostProcessPanel/ScrollContainer/VBoxContainer/TonemapHeader/Tonemap" to="MainMenu/HBox/PostProcessMenu/PostProcessPanel" method="_on_tonemap_toggled"]

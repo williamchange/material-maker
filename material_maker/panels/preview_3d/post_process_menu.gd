@@ -94,14 +94,14 @@ func expand_panel_width() -> void:
 			if v_scroll.visible else custom_min_width)
 
 func is_section_not_default(section : String):
-	var not_default := true
+	var not_default : bool = true
 	for config in mm_globals.DEFAULT_CONFIG.keys():
-		var key := "ui_3d_preview_" + section
+		var key : String = "ui_3d_preview_" + section
 		if key in config and "enable" not in config:
 			not_default = not_default and (mm_globals.get_config(config) == mm_globals.DEFAULT_CONFIG[config])
 	return not_default
 
-func _process(_delta: float) -> void:
+func _process(_delta : float) -> void:
 	$ScrollContainer/VBoxContainer/TonemapHeader/ResetTonemapSection.disabled = is_section_not_default("tonemap")
 	$ScrollContainer/VBoxContainer/GlowHeader/ResetGlowSection.disabled = is_section_not_default("glow")
 	$ScrollContainer/VBoxContainer/AdjustmentHeader/ResetAdjustmentSection.disabled = is_section_not_default("adjustment")
@@ -466,3 +466,6 @@ func _on_far_transition_value_changed(value: Variant) -> void:
 func _on_near_transition_value_changed(value: Variant) -> void:
 	camera_attributes.dof_blur_near_transition = value
 	mm_globals.set_config(SETTINGS_PREVIEW_DOF_NEAR_TRANSITION, value)
+
+func _on_visibility_changed() -> void:
+	set_process(is_visible_in_tree())
