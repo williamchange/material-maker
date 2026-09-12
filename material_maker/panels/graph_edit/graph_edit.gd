@@ -68,6 +68,9 @@ var is_dragging_connection : bool = false:
 		is_dragging_connection = v
 		set_process_if_necessary()
 
+var active_touch_dragging : int = 0
+var active_touch : int = 0
+
 signal save_path_changed
 signal graph_changed
 signal view_updated
@@ -144,8 +147,12 @@ func process_port_click(pressed : bool):
 							port_click_port_index = -1
 						return
 
-
 func _input(event : InputEvent) -> void:
+	if event is InputEventScreenDrag:
+		active_touch_dragging = event.index + 1
+	elif event is InputEventScreenTouch and event.pressed:
+		active_touch = event.index + 1
+
 	# Handle node grab
 	if has_grab:
 		var selected_nodes := get_selected_nodes()
@@ -243,6 +250,12 @@ func _gui_input(event) -> void:
 		if selected_nodes.size() == 1 and selected_nodes[0].generator is MMGenGraph:
 			update_view(selected_nodes[0].generator)
 	elif event is InputEventMouseButton:
+		# handle node popup from two-finger tap
+		if event.device == InputEvent.DEVICE_ID_EMULATION:
+			if active_touch == 2 and not event.pressed:
+				node_popup.position = Vector2i(get_screen_transform()*get_local_mouse_position())
+				node_popup.show_popup()
+
 		# reverted to default GraphEdit behavior
 		if false and event.button_index == MOUSE_BUTTON_WHEEL_UP and event.is_pressed():
 			if event.control:
@@ -344,6 +357,12 @@ func _gui_input(event) -> void:
 						if rect.has_point(get_global_mouse_position()):
 							found_tip = found_tip or c.set_slot_tip_text(get_global_mouse_position()-c.global_position)
 	elif event is InputEventMouseMotion:
+		# Handle two-finger pan
+		if active_touch_dragging == 2:
+			scroll_offset -= event.relative
+			cancel_drag_selection()
+			accept_event()
+
 		var found_tip : bool = false
 		for c in get_children():
 			if c.has_method("get_slot_tooltip"):
@@ -1655,7 +1674,6 @@ func add_reroute_under_mouse() -> void:
 		var next : Dictionary = generator.serialize()
 		undoredo_create_step("Reroute on connection", generator.get_hier_name(), prev, next)
 
-
 func add_reroute_to_input(node : MMGraphNodeMinimal, port_index : int) -> void:
 	var prev = generator.serialize()
 	var new_connections = []
@@ -2050,3 +2068,9 @@ func _on_button_reroll_pressed() -> void:
 
 func _on_button_reroll_mouse_entered() -> void:
 	mm_globals.set_tip_text("#LMB: Reroll all nodes, Shift+#LMB: Reroll selected nodes")
+
+func cancel_drag_selection() -> void:
+	var e : InputEventMouseButton = InputEventMouseButton.new()
+	e.button_index = MOUSE_BUTTON_LEFT
+	e.pressed = false
+	Input.parse_input_event(e)
