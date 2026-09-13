@@ -222,7 +222,7 @@ func _gui_input(event) -> void:
 		if connections_to_cut.size():
 			on_cut_connections(connections_to_cut)
 			connections_to_cut.clear()
-		mm_globals.set_custom_mouse_cursor(null)
+		Input.set_custom_mouse_cursor(null)
 		drag_cut_line.clear()
 		conns.clear()
 		queue_redraw()
