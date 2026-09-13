@@ -46,6 +46,8 @@ func _get_data_preview() -> Dictionary:
 	var selected_item = get_selected()
 	if selected_item != null:
 		var data = selected_item.get_metadata(0)
+		if data == null:
+			return {}
 		var preview : Control
 		var preview_texture = selected_item.get_icon(1)
 		if preview_texture != null:
