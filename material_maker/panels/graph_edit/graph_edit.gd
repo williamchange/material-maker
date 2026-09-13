@@ -147,11 +147,14 @@ func process_port_click(pressed : bool):
 							port_click_port_index = -1
 						return
 
+var touch_info : Dictionary[int, Vector2] = {}
+
 func _input(event : InputEvent) -> void:
 	if event is InputEventScreenDrag:
 		active_touch_dragging = event.index + 1
 	elif event is InputEventScreenTouch and event.pressed:
 		active_touch = event.index + 1
+		touch_info[event.index] = event.position
 
 	# Handle node grab
 	if has_grab:
@@ -219,7 +222,7 @@ func _gui_input(event) -> void:
 		if connections_to_cut.size():
 			on_cut_connections(connections_to_cut)
 			connections_to_cut.clear()
-		Input.set_custom_mouse_cursor(null)
+		mm_globals.set_custom_mouse_cursor(null)
 		drag_cut_line.clear()
 		conns.clear()
 		queue_redraw()
@@ -252,9 +255,12 @@ func _gui_input(event) -> void:
 	elif event is InputEventMouseButton:
 		# handle node popup from two-finger tap
 		if event.device == InputEvent.DEVICE_ID_EMULATION:
-			if active_touch == 2 and not event.pressed:
-				node_popup.position = Vector2i(get_screen_transform()*get_local_mouse_position())
-				node_popup.show_popup()
+			if active_touch == 2 and not event.pressed and touch_info.size():
+				if get_nodes_under_mouse().is_empty():
+					var avg : Vector2 = (touch_info[0] + touch_info[1]) * 0.5
+					node_popup.position = Vector2i(avg)
+					node_popup.show_popup()
+					touch_info.clear()
 
 		# reverted to default GraphEdit behavior
 		if false and event.button_index == MOUSE_BUTTON_WHEEL_UP and event.is_pressed():
@@ -359,8 +365,8 @@ func _gui_input(event) -> void:
 	elif event is InputEventMouseMotion:
 		# Handle two-finger pan
 		if active_touch_dragging == 2:
-			scroll_offset -= event.relative
 			cancel_drag_selection()
+			scroll_offset -= event.relative
 			accept_event()
 
 		var found_tip : bool = false
