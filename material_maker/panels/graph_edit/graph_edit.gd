@@ -68,8 +68,9 @@ var is_dragging_connection : bool = false:
 		is_dragging_connection = v
 		set_process_if_necessary()
 
-var active_touch_dragging : int = 0
-var active_touch : int = 0
+static var active_touch_dragging : int = 0
+static var active_touch : int = 0
+static var touch_info : Dictionary[int, Vector2] = {}
 
 signal save_path_changed
 signal graph_changed
@@ -146,8 +147,6 @@ func process_port_click(pressed : bool):
 							set_current_preview(1 if is_shift_pressed else 0, port_click_node, port_click_port_index, is_control_pressed)
 							port_click_port_index = -1
 						return
-
-var touch_info : Dictionary[int, Vector2] = {}
 
 func _input(event : InputEvent) -> void:
 	if event is InputEventScreenDrag:
