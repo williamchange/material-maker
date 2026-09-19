@@ -16,7 +16,7 @@ class Preview:
 
 var node_factory = null
 
-var save_path := "": set = set_save_path
+var save_path : String = "": set = set_save_path
 var need_save : bool = false
 var save_crash_recovery_path = ""
 var need_save_crash_recovery : bool = false
@@ -140,6 +140,13 @@ func process_port_click(pressed : bool):
 
 
 func _input(event : InputEvent) -> void:
+	if OS.get_name() == "Android" and event is InputEventPanGesture:
+		if get_rect().has_point(make_input_local(event).position):
+			scroll_offset += event.delta
+			if is_dragging_connection:
+				force_connection_drag_end()
+			accept_event()
+
 	# Handle node grab
 	if has_grab:
 		var selected_nodes := get_selected_nodes()
@@ -385,7 +392,12 @@ func _gui_input(event) -> void:
 				Input.set_custom_mouse_cursor(null)
 			lasso_points.clear()
 			queue_redraw()
-
+	elif event is InputEventScreenTouch:
+		if not event.pressed and mm_touch.last_touch_duration_msec < 80:
+			if event.index == 1: # 2-finger tap: undo
+				mm_globals.main_window.edit_undo()
+			elif event.index == 2: # 3-finger tap: redo
+				mm_globals.main_window.edit_redo()
 
 func get_padded_node_rect(graph_node:GraphNode) -> Rect2:
 	var rect : Rect2 = graph_node.get_global_rect()
@@ -586,7 +598,11 @@ func update_tab_title() -> void:
 		return
 	var title = "[unnamed]"
 	if not save_path.is_empty():
-		title = save_path.right(-(save_path.rfind("/")+1))
+		if OS.get_name() == "Android":
+			var path : String = save_path.uri_decode().replace(":", "/")
+			title = path.get_file()
+		else:
+			title = save_path.get_file()
 		if generator:
 			generator.set_meta("file_path", title)
 	if need_save:
@@ -600,7 +616,7 @@ func set_need_save(ns = true) -> void:
 		update_tab_title()
 	need_save_crash_recovery = true
 
-func set_save_path(path: String) -> void:
+func set_save_path(path : String) -> void:
 	if path != save_path:
 		remove_crash_recovery_file()
 		need_save_crash_recovery = false
@@ -861,6 +877,16 @@ func save_as() -> bool:
 		if status.ok:
 			if await save_file(status.text.get_file().get_basename()+".ptex"):
 				top_generator.emit_signal("hierarchy_changed")
+	elif OS.get_name() == "Android":
+		var filters : PackedStringArray = PackedStringArray(["*.ptex;Procedural Textures File"])
+		var default_file_name : String = tr("unnamed") + ".ptex"
+		DisplayServer.file_dialog_show("", OS.get_system_dir(OS.SYSTEM_DIR_DESKTOP),
+				default_file_name, false, DisplayServer.FILE_DIALOG_MODE_SAVE_FILE, filters,
+			func (status : bool, uris: PackedStringArray, _selected_filter_index: int) -> void:
+				if status and uris.size() == 1 and await save_file(uris[0]):
+					mm_globals.main_window.add_recent(save_path)
+					top_generator.hierarchy_changed.emit()
+		)
 	else:
 		var dialog = preload("res://material_maker/windows/file_dialog/file_dialog.tscn").instantiate()
 		dialog.min_size = Vector2(500, 500)

@@ -814,7 +814,7 @@ func get_shader_model_for_edit():
 func do_edit(node, edit_window_scene : PackedScene, tab : String = "") -> void:
 	if shader_model != null:
 		var edit_window = edit_window_scene.instantiate()
-		mm_globals.main_window.add_dialog(edit_window)
+		mm_globals.main_window.add_dialog(edit_window, OS.get_name() == "Android")
 		edit_window.set_model_data(get_shader_model_for_edit())
 		edit_window.node_changed.connect(node.update_shader_generator)
 		if node.generator is MMGenMaterial:
@@ -822,8 +822,13 @@ func do_edit(node, edit_window_scene : PackedScene, tab : String = "") -> void:
 			edit_window.title = "%s - %s" % [material, edit_window.title]
 		edit_window.get_window().content_scale_factor = mm_globals.ui_scale_factor()
 		edit_window.get_window().min_size = Vector2(950, 450) * edit_window.get_window().content_scale_factor
-		edit_window.hide()
-		edit_window.popup_centered()
+
+		if OS.get_name() == "Android":
+			mm_touch.setup_dialog.call_deferred(edit_window)
+		else:
+			edit_window.hide()
+			edit_window.popup_centered()
+
 		if tab != "":
 			edit_window.show_tab(tab)
 

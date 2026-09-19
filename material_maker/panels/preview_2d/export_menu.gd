@@ -113,7 +113,7 @@ func get_export_resolution() -> Vector2i:
 
 
 func _on_image_pressed() -> void:
-	var path: String = %ExportFolder.text
+	var path : String = %ExportFolder.text
 	var file_name: String = %ExportFile.text
 
 	if file_name:
@@ -140,7 +140,10 @@ func _on_image_pressed() -> void:
 			path = files[0]
 
 	if file_name:
-		path = path.path_join(file_name)
+		if OS.get_name() == "Android":
+			path += "#" + file_name
+		else:
+			path = path.path_join(file_name)
 
 
 	if path:

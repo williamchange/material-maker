@@ -12,7 +12,7 @@ var mm_scene : PackedScene = null
 
 
 const BACKGROUNDS_DIR : String = "res://splash_screen/backgrounds/"
-const BACKGROUNDS : Array[Dictionary] = [
+var splash_backgrounds : Array[Dictionary] = [
 	{ author="Angel", entries=[
 		{ title="Beanbag Chair", file="angel_beanbag_chair.png" },
 		{ title="Soft Nurball", file="angel_soft_nurball.png" },
@@ -101,6 +101,10 @@ const ACTIVITY_MESSAGES : Array[String] = [
 ]
 
 func _enter_tree():
+	if OS.get_name() == "Android":
+		filter_splash_screens()
+		setup_mobile_margins()
+		$SplashScreen.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
 	var date : Dictionary = Time.get_date_dict_from_system()
 	var date_int : int = date.month*33+date.day
 	var screen : int = 0
@@ -108,32 +112,38 @@ func _enter_tree():
 		_:
 			randomize()
 			var sum : float = 0.0
-			for i in BACKGROUNDS.size():
-				if BACKGROUNDS[i].has("odds"):
-					sum += BACKGROUNDS[i].odds
+			for i in splash_backgrounds.size():
+				if splash_backgrounds[i].has("odds"):
+					sum += splash_backgrounds[i].odds
 				else:
 					sum += 1
 			var value : float = randf_range(0, sum)
 			sum = 0.0
-			for i in BACKGROUNDS.size():
-				if BACKGROUNDS[i].has("odds"):
-					sum += BACKGROUNDS[i].odds
+			for i in splash_backgrounds.size():
+				if splash_backgrounds[i].has("odds"):
+					sum += splash_backgrounds[i].odds
 				else:
 					sum += 1
 				if sum >= value:
 					screen = i
 					break
 	set_screen(screen)
+
 	var window : Window = get_window()
-	var current_screen_index = window.current_screen
-	var ui_scale : int = 2 if DisplayServer.screen_get_dpi() >= 192 and DisplayServer.screen_get_size().x >= 2048 else 1
-	window.position = (DisplayServer.screen_get_size(current_screen_index)-Vector2i(ui_scale*size))/2 + DisplayServer.screen_get_position(current_screen_index)
-	window.size = ui_scale*size
+	var ui_scale : int = _ui_scale()
 	window.content_scale_factor = ui_scale
+	if OS.get_name() != "Android":
+		var current_screen_index = window.current_screen
+		@warning_ignore("integer_division")
+		window.position = (DisplayServer.screen_get_size(current_screen_index)-Vector2i(ui_scale*size))/2 + DisplayServer.screen_get_position(current_screen_index)
+		window.size = ui_scale*size
+
+func _ui_scale() -> int:
+	return 2 if DisplayServer.screen_get_dpi() >= 192 and DisplayServer.screen_get_size().x >= 2048 else 1
 
 func set_screen(bi : int, sub_index = -1) -> void:
 	background_index = bi
-	var background : Dictionary = BACKGROUNDS[background_index]
+	var background : Dictionary = splash_backgrounds[background_index]
 	var author : String = background.author if background.has("author") else ""
 	var file : String = background.file if background.has("file") else ""
 	var title : String = background.title if background.has("title") else ""
@@ -260,16 +270,16 @@ func _on_secret_button_gui_input(event):
 			mm_steam.unlock_achievement("ACH_EAGLE_EYE")
 
 func _on_previous_pressed():
-	if BACKGROUNDS[background_index].has("entries") and background_subindex > 0:
+	if splash_backgrounds[background_index].has("entries") and background_subindex > 0:
 		set_screen(background_index, background_subindex-1)
 	else:
-		set_screen(background_index-1 if background_index > 0 else BACKGROUNDS.size()-1, 1000)
+		set_screen(background_index-1 if background_index > 0 else splash_backgrounds.size()-1, 1000)
 
 func _on_next_pressed():
-	if BACKGROUNDS[background_index].has("entries") and background_subindex < BACKGROUNDS[background_index].entries.size()-1:
+	if splash_backgrounds[background_index].has("entries") and background_subindex < splash_backgrounds[background_index].entries.size()-1:
 		set_screen(background_index, background_subindex+1)
 	else:
-		set_screen(background_index+1 if background_index < BACKGROUNDS.size()-1 else 0, 0)
+		set_screen(background_index+1 if background_index < splash_backgrounds.size()-1 else 0, 0)
 
 func _on_title_gui_input(event, url : String):
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
@@ -279,3 +289,30 @@ func _on_title_gui_input(event, url : String):
 func _on_url_gui_input(event):
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
 		OS.shell_open("https://www.materialmaker.org")
+
+func setup_mobile_margins() -> void:
+	var ui_scale : float = _ui_scale()
+	const padding : int = 10
+	custom_minimum_size = Vector2.ZERO
+	$SplashScreen.custom_minimum_size = Vector2.ZERO
+	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	add_theme_constant_override("margin_left", mm_touch.cutout_margins(SIDE_LEFT, ui_scale) + padding)
+	add_theme_constant_override("margin_bottom", mm_touch.cutout_margins(SIDE_BOTTOM, ui_scale))
+	add_theme_constant_override("margin_top", mm_touch.cutout_margins(SIDE_TOP, ui_scale))
+	$MarginContainer.add_theme_constant_override(
+			"margin_right", mm_touch.calc_margins(SIDE_RIGHT) / ui_scale + padding)
+
+func filter_splash_screens() -> void:
+	# filter animated shaders
+	var filtered_backgrounds : Array[Dictionary]
+	for group in splash_backgrounds:
+		var entries : Array[Dictionary] = []
+		if group.has("entries"):
+			for e in group.entries:
+				if e.file.get_extension() == "png":
+					entries.append(e)
+		if entries.is_empty():
+			continue
+		group.entries = entries
+		filtered_backgrounds.append(group)
+	splash_backgrounds = filtered_backgrounds

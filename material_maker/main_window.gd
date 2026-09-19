@@ -24,9 +24,9 @@ var preview_tesselation_detail : int = 256
 @onready var brush_library_manager = $BrushLibraryManager
 
 
-@onready var projects_panel = $VBoxContainer/Layout/FlexibleLayout/Main
+@onready var projects_panel = %Main
 
-@onready var layout = $VBoxContainer/Layout
+@onready var layout = %Layout
 var library
 var preview_2d : Array
 var histogram
@@ -146,24 +146,25 @@ func _ready() -> void:
 
 	on_config_changed()
 
-	# Set a minimum window size to prevent UI elements from collapsing on each other.
-	get_window().min_size = Vector2(1024, 600)
+	if OS.get_name() != "Android":
+		# Set a minimum window size to prevent UI elements from collapsing on each other.
+		get_window().min_size = Vector2(1024, 600)
 
-	# Restore the window position/size if values are present in the configuration cache
-	if mm_globals.config.has_section_key("window", "screen"):
-		get_window().current_screen = mm_globals.config.get_value("window", "screen")
+		# Restore the window position/size if values are present in the configuration cache
+		if mm_globals.config.has_section_key("window", "screen"):
+			get_window().current_screen = mm_globals.config.get_value("window", "screen")
 
-	if mm_globals.config.has_section_key("window", "maximized"):
-		get_window().mode = Window.MODE_MAXIMIZED if (mm_globals.config.get_value("window", "maximized")) else Window.MODE_WINDOWED
+		if mm_globals.config.has_section_key("window", "maximized"):
+			get_window().mode = Window.MODE_MAXIMIZED if (mm_globals.config.get_value("window", "maximized")) else Window.MODE_WINDOWED
 
-	if get_window().mode != Window.MODE_MAXIMIZED:
-		if mm_globals.config.has_section_key("window", "position"):
-			get_window().position = mm_globals.config.get_value("window", "position")
-		else:
-			get_window().min_size *= get_window().content_scale_factor
-			get_window().move_to_center()
-		if mm_globals.config.has_section_key("window", "size"):
-			get_window().size = mm_globals.config.get_value("window", "size")
+		if get_window().mode != Window.MODE_MAXIMIZED:
+			if mm_globals.config.has_section_key("window", "position"):
+				get_window().position = mm_globals.config.get_value("window", "position")
+			else:
+				get_window().min_size *= get_window().content_scale_factor
+				get_window().move_to_center()
+			if mm_globals.config.has_section_key("window", "size"):
+				get_window().size = mm_globals.config.get_value("window", "size")
 
 	# Restore the theme
 	var theme_name: String = "default dark"
@@ -258,6 +259,8 @@ func _ready() -> void:
 	size = get_viewport().size/get_viewport().content_scale_factor
 	position = Vector2i(0, 0)
 
+	if OS.get_name() == "Android":
+		setup_mobile_margins()
 
 var menu_update_requested : bool = false
 
@@ -273,7 +276,7 @@ func do_update_menus() -> void:
 		menu_bar_class = mm_globals.menu_manager.MenuBarDisplayServer
 	else:
 		menu_bar_class = mm_globals.menu_manager.MenuBarGodot
-	var menu_bar = menu_bar_class.new($VBoxContainer/TopBar/Menu)
+	var menu_bar = menu_bar_class.new($MainContainer/VBoxContainer/TopBar/Menu)
 	mm_globals.menu_manager.create_menus(MENU, self, menu_bar)
 	menu_update_requested = false
 
@@ -294,6 +297,7 @@ func _input(event: InputEvent) -> void:
 				get_window().mode = Window.MODE_MAXIMIZED
 
 func on_config_changed() -> void:
+	DisplayServer.screen_set_keep_on(mm_globals.get_config("keep_screen_on"))
 	DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_ENABLED if (mm_globals.get_config("vsync")) else DisplayServer.VSYNC_DISABLED)
 	# Convert FPS to microseconds per frame.
 	# Clamp the FPS to reasonable values to avoid locking up the UI.
@@ -307,12 +311,7 @@ func on_config_changed() -> void:
 		if OS.get_name() == "macOS":
 			mm_globals.main_window.update_menus()
 
-	var ui_scale = mm_globals.get_config("ui_scale")
-	if ui_scale <= 0:
-		# If scale is set to 0 (auto), scale everything if the display requires it (crude hiDPI support).
-		# This prevents UI elements from being too small on hiDPI displays.
-		ui_scale = 2 if DisplayServer.screen_get_dpi() >= 192 and DisplayServer.screen_get_size().x >= 2048 else 1
-	get_viewport().content_scale_factor = ui_scale
+	get_viewport().content_scale_factor = mm_globals.get_ui_scale()
 	size = get_viewport().size/get_viewport().content_scale_factor
 	position = Vector2i(0, 0)
 	#ProjectSettings.set_setting("display/window/stretch/scale", scale)
@@ -331,6 +330,8 @@ func on_config_changed() -> void:
 				DisplayServer.tablet_set_current_driver("wintab")
 			WinTabletDriver.DISABLED:
 				DisplayServer.tablet_set_current_driver("dummy")
+	elif OS.get_name() == "Android":
+		setup_mobile_margins()
 
 	# update minimize/close button visibility
 	var graph_edit : MMGraphEdit = get_current_graph_edit()
@@ -343,6 +344,7 @@ func on_config_changed() -> void:
 
 	if not get_window().gui_embed_subwindows:
 		get_window().gui_embed_subwindows = mm_globals.get_config("ui_single_window_mode")
+
 
 func get_panel(panel_name : String) -> Control:
 	return layout.get_panel(panel_name)
@@ -706,15 +708,15 @@ func _on_PanelsPreset_id_pressed(id : int) -> void:
 						var replace_status : String = await accept_dialog(
 							"Preset \"%s\" already exists. Do you want to replace it?" % [preset_name], true)
 						if replace_status == "ok":
-							existing_preset.preset = $VBoxContainer/Layout/FlexibleLayout.serialize()
+							existing_preset.preset = $MainContainer/VBoxContainer/Layout/FlexibleLayout.serialize()
 					else:
 						var new_preset : Dictionary = {
 							"name": preset_name,
-							"preset": $VBoxContainer/Layout/FlexibleLayout.serialize()
+							"preset": $MainContainer/VBoxContainer/Layout/FlexibleLayout.serialize()
 						}
 						layout.presets.push_back(new_preset)
 		_:
-			$VBoxContainer/Layout/FlexibleLayout.init(layout.presets[id].preset)
+			$MainContainer/VBoxContainer/Layout/FlexibleLayout.init(layout.presets[id].preset)
 	update_menus()
 
 func create_menu_create(menu : MMMenuManager.MenuBase) -> void:
@@ -900,7 +902,7 @@ func quit() -> void:
 			quitting = false
 			return
 	if mm_globals.get_config("confirm_close_project"):
-		var result = await $VBoxContainer/Layout/FlexibleLayout/Main/Projects.check_save_tabs()
+		var result = await $MainContainer/VBoxContainer/Layout/FlexibleLayout/Main/Projects.check_save_tabs()
 		if !result:
 			quitting = false
 			return
@@ -1105,10 +1107,10 @@ func view_reset_zoom() -> void:
 	graph_edit.zoom = 1
 
 func view_reset_panels() -> void:
-	$VBoxContainer/Layout.reset_panels()
+	$MainContainer/VBoxContainer/Layout.reset_panels()
 
 func toggle_side_panels() -> void:
-	$VBoxContainer/Layout.toggle_side_panels()
+	$MainContainer/VBoxContainer/Layout.toggle_side_panels()
 
 func get_selected_nodes() -> Array:
 	var graph_edit : MMGraphEdit = get_current_graph_edit()
@@ -1223,7 +1225,7 @@ func _on_PaintEnvironment_id_pressed(id) -> void:
 
 func environment_editor() -> Node:
 	var env_editor : Node = load("res://material_maker/windows/environment_editor/environment_editor.tscn").instantiate()
-	add_child(env_editor)
+	add_dialog(env_editor, OS.get_name() == "Android")
 	return env_editor
 
 # -----------------------------------------------------------------------
@@ -1271,10 +1273,8 @@ func bug_report() -> void:
 	OS.shell_open("https://github.com/RodZill4/godot-procedural-textures/issues")
 
 func about() -> void:
-	var about_box = preload("res://material_maker/windows/about/about.tscn").instantiate()
-	add_child(about_box)
-	about_box.hide()
-	about_box.popup_centered()
+	var about_box : Window = preload("res://material_maker/windows/about/about.tscn").instantiate()
+	add_dialog(about_box, OS.get_name() == "Android")
 
 func show_example_projects() -> void:
 	var base_dir : String = MMPaths.get_resource_dir().replace("\\", "/")
@@ -1378,6 +1378,9 @@ func _notification(what : int) -> void:
 			OS.low_processor_usage_mode_sleep_usec = (1.0 / clamp(mm_globals.get_config("fps_limit"), FPS_LIMIT_MIN, FPS_LIMIT_MAX)) * 1_000_000
 		NOTIFICATION_WM_ABOUT:
 			about.call_deferred()
+		NOTIFICATION_APPLICATION_PAUSED:
+			if OS.get_name() == "Android":
+				mm_globals.config.save("user://mm_config.ini")
 
 func on_close_requested():
 	await get_tree().process_frame
@@ -1505,8 +1508,8 @@ func set_tip_text(tip : String, timeout : float = 0.0, priority: int = 0):
 	tip = tip.replace("#MMB", "[img]res://material_maker/icons/mmb.tres[/img]")
 	if priority >= tip_priority:
 		tip_priority = priority
-		$VBoxContainer/StatusBar/HBox/Tip.text = tip
-		var tip_timer : Timer = $VBoxContainer/StatusBar/HBox/Tip/Timer
+		$MainContainer/VBoxContainer/StatusBar/HBox/Tip.text = tip
+		var tip_timer : Timer = $MainContainer/VBoxContainer/StatusBar/HBox/Tip/Timer
 		tip_timer.stop()
 		if timeout > 0.0:
 			tip_timer.one_shot = true
@@ -1515,15 +1518,23 @@ func set_tip_text(tip : String, timeout : float = 0.0, priority: int = 0):
 
 func _on_Tip_Timer_timeout():
 	tip_priority = 0
-	$VBoxContainer/StatusBar/HBox/Tip.text = ""
+	$MainContainer/VBoxContainer/StatusBar/HBox/Tip.text = ""
 
 # Add dialog
 
-func add_dialog(dialog : Window):
-	var background : ColorRect = load("res://material_maker/darken.tscn").instantiate()
-	if mm_globals.get_config("dialog_dim_background"):
-		add_child(background)
-		dialog.tree_exited.connect(background.queue_free)
+func add_dialog(dialog : Window, is_full_screen_dialog : bool = false) -> void:
+	if is_full_screen_dialog or mm_globals.get_config("dialog_dim_background"):
+		var bg : ColorRect = ColorRect.new()
+		bg.set_anchors_and_offsets_preset(PRESET_FULL_RECT)
+		bg.color = theme.get_stylebox("panel", "Panel").bg_color
+		bg.color.a = 1.0 if is_full_screen_dialog else 0.8
+
+		if is_full_screen_dialog or OS.get_name() == "Android":
+			get_tree().root.add_child(bg)
+		else:
+			add_child(bg)
+
+		dialog.tree_exited.connect(bg.queue_free)
 	add_child(dialog)
 
 # Accept dialog
@@ -1562,3 +1573,10 @@ func draw_children(p, x):
 
 func _draw_debug():
 	draw_children(self, get_global_mouse_position())
+
+func setup_mobile_margins() -> void:
+	# offset by MM_MainBackground stylebox content margins
+	$MainContainer.add_theme_constant_override("margin_left",
+			maxi(mm_touch.cutout_margins(SIDE_LEFT),  10))
+	$MainContainer.add_theme_constant_override("margin_right",
+			maxi(mm_touch.cutout_margins(SIDE_RIGHT), 10))

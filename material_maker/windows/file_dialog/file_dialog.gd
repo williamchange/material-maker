@@ -13,6 +13,8 @@ enum Thumbnail {
 }
 
 func _ready() -> void:
+	if OS.get_name() == "Android":
+		OS.request_permissions()
 	load_fav_recents()
 	if file_mode == FileMode.FILE_MODE_SAVE_FILE:
 		ok_button_text = tr("Save")
