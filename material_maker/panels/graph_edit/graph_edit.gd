@@ -16,7 +16,7 @@ class Preview:
 
 var node_factory = null
 
-var save_path := "": set = set_save_path
+var save_path : String = "": set = set_save_path
 var need_save : bool = false
 var save_crash_recovery_path = ""
 var need_save_crash_recovery : bool = false
@@ -67,6 +67,8 @@ var is_dragging_connection : bool = false:
 	set(v):
 		is_dragging_connection = v
 		set_process_if_necessary()
+
+var has_double_tap : bool = false
 
 signal save_path_changed
 signal graph_changed
@@ -138,8 +140,22 @@ func process_port_click(pressed : bool):
 							port_click_port_index = -1
 						return
 
-
 func _input(event : InputEvent) -> void:
+	if OS.get_name() == "Android":
+		if event.get("position") and get_rect().has_point(
+				make_input_local(event).position):
+			if event is InputEventPanGesture:
+				scroll_offset += event.delta
+				if is_dragging_connection:
+					force_connection_drag_end()
+				accept_event()
+			elif event is InputEventScreenTouch:
+				has_double_tap = event.double_tap
+			elif event is InputEventMagnifyGesture and has_double_tap:
+				# prevents double-tap drag zoom from activating
+				# as it easily interferes with two-finger magnify
+				accept_event()
+
 	# Handle node grab
 	if has_grab:
 		var selected_nodes := get_selected_nodes()
@@ -385,7 +401,12 @@ func _gui_input(event) -> void:
 				Input.set_custom_mouse_cursor(null)
 			lasso_points.clear()
 			queue_redraw()
-
+	elif event is InputEventScreenTouch:
+		if not event.pressed and mm_touch.last_touch_duration_msec < 80:
+			if event.index == 1: # 2-finger tap: undo
+				mm_globals.main_window.edit_undo()
+			elif event.index == 2: # 3-finger tap: redo
+				mm_globals.main_window.edit_redo()
 
 func get_padded_node_rect(graph_node:GraphNode) -> Rect2:
 	var rect : Rect2 = graph_node.get_global_rect()
@@ -586,7 +607,11 @@ func update_tab_title() -> void:
 		return
 	var title = "[unnamed]"
 	if not save_path.is_empty():
-		title = save_path.right(-(save_path.rfind("/")+1))
+		if OS.get_name() == "Android":
+			var path : String = save_path.uri_decode().replace(":", "/")
+			title = path.get_file()
+		else:
+			title = save_path.get_file()
 		if generator:
 			generator.set_meta("file_path", title)
 	if need_save:
@@ -600,7 +625,7 @@ func set_need_save(ns = true) -> void:
 		update_tab_title()
 	need_save_crash_recovery = true
 
-func set_save_path(path: String) -> void:
+func set_save_path(path : String) -> void:
 	if path != save_path:
 		remove_crash_recovery_file()
 		need_save_crash_recovery = false

@@ -3,7 +3,10 @@ extends Node
 
 @onready var menu_manager = $MenuManager
 
-var main_window
+var main_window : MainWindow
+
+@warning_ignore("unused_signal")
+signal preferences_updated
 
 var config : ConfigFile = ConfigFile.new()
 const DEFAULT_CONFIG : Dictionary = {
@@ -64,7 +67,8 @@ const DEFAULT_CONFIG : Dictionary = {
 	node_minimize_button = true,
 	node_close_button = true,
 	ui_field_sensitivity = 1.0,
-	color_picker_floating = false
+	color_picker_floating = false,
+	keep_screen_on = true,
 }
 
 
@@ -188,7 +192,7 @@ func popup_menu(menu : PopupMenu, parent : Control):
 	var content_scale_factor : float = mm_globals.ui_scale_factor()
 	menu.popup(Rect2(parent.get_local_mouse_position()*content_scale_factor*zoom_fac + parent.get_screen_position(), Vector2(0, 0)))
 
-func set_tip_text(tip : String, timeout : float = 0.0, priority: int = 0):
+func set_tip_text(tip : String, timeout : float = 0.0, priority: int = 0) -> void:
 	if main_window:
 		main_window.set_tip_text(TranslationServer.translate(tip), timeout, priority)
 	else:
@@ -220,7 +224,13 @@ func propagate_shortcuts(control : Control, event : InputEvent):
 	do_propagate_shortcuts(control, event)
 
 func get_home_directory() -> String:
-	return OS.get_environment("USERPROFILE" if OS.has_feature("windows") else "HOME")
+	match OS.get_name():
+		"Windows":
+			return OS.get_environment("USERPROFILE")
+		"Android":
+			return "/storage/emulated/%s" % [ mm_globals.android_get_user_uid() ]
+		_:
+			return "HOME"
 
 func get_node_title_from_gen(generator : MMGenBase) -> String:
 	# Get GraphNode title from generator (in current graph)
@@ -237,3 +247,54 @@ func ui_scale_factor() -> float:
 	if get_tree().root.gui_embed_subwindows:
 		return 1.0
 	return get_tree().root.content_scale_factor
+
+func get_ui_scale() -> float:
+	var ui_scale = mm_globals.get_config("ui_scale")
+	if ui_scale <= 0:
+		# If scale is set to 0 (auto), scale everything if the display requires it (crude hiDPI support).
+		# This prevents UI elements from being too small on hiDPI displays.
+		return 2 if DisplayServer.screen_get_dpi() >= 192 and DisplayServer.screen_get_size().x >= 2048 else 1
+	return ui_scale
+
+#region Android utilties
+
+## Creates a toast message.
+## [param duration] set to 0 displays the message for a short period of time.
+func android_make_toast(message : String, duration : int = 1) -> void:
+	var android_runtime : JNISingleton = Engine.get_singleton("AndroidRuntime")
+	if android_runtime:
+		var activity : JavaObject = android_runtime.getActivity()
+		var toastCallable = func() -> void:
+			var ToastClass : JavaClass = JavaClassWrapper.wrap("android.widget.Toast")
+			ToastClass.makeText(activity, message, duration).show()
+
+		activity.runOnUiThread(android_runtime.createRunnableFromGodotCallable(toastCallable))
+	else:
+		printerr("Unable to access android runtime")
+
+## Returns the current user's uid (i.e. the '0' in /storage/emulated/0).
+func android_get_user_uid() -> int:
+	var android_runtime : JNISingleton = Engine.get_singleton("AndroidRuntime")
+	if android_runtime:
+		var processClass : JavaClass = JavaClassWrapper.wrap("android.os.Process")
+		var userHandle : JavaClass = JavaClassWrapper.wrap("android.os.UserHandle")
+		return userHandle.getUserId(processClass.myUid())
+	else:
+		printerr("Unable to access android runtime")
+	return -1
+
+func android_move_task_to_back() -> void:
+	var android_runtime : JNISingleton = Engine.get_singleton("AndroidRuntime")
+	if android_runtime:
+		android_runtime.getActivity().moveTaskToBack(true)
+
+func android_open_url(url : String) -> void:
+	# can't open url directly via shell_open
+	var b : Button = Button.new()
+	b.pressed.connect(OS.shell_open.call_deferred.bind(url))
+	b.pressed.connect(b.queue_free)
+	b.modulate.a = 0
+	b.pressed.emit()
+	add_child(b)
+
+#endregion
