@@ -75,6 +75,8 @@ signal graph_changed
 signal view_updated
 signal preview_changed
 
+## Emitted when connections are cut using the knife tool.
+signal cut_drag_finished
 
 func _ready() -> void:
 	OS.low_processor_usage_mode = true
@@ -199,7 +201,7 @@ func _input(event : InputEvent) -> void:
 		if event.unicode >= KEY_0 and event.unicode <= KEY_9 and event.pressed:
 			grab_focus()
 
-func _gui_input(event) -> void:
+func _gui_input(event : InputEvent) -> void:
 	if (
 		event.is_action_pressed("ui_library_popup")
 		and not Input.is_key_pressed(KEY_CTRL)
@@ -211,21 +213,7 @@ func _gui_input(event) -> void:
 		node_popup.position = Vector2i(get_screen_transform()*get_local_mouse_position())
 		node_popup.show_popup()
 	elif event.is_action_released("ui_cut_drag"):
-		var conns : Array[Dictionary]
-		for p in len(drag_cut_line) - 1:
-			var rect : Rect2
-			rect.position = drag_cut_line[p]
-			rect.end = drag_cut_line[p + 1]
-			conns = get_connections_intersecting_with_rect(rect.abs())
-			if conns.size():
-				connections_to_cut.append_array(conns)
-		if connections_to_cut.size():
-			on_cut_connections(connections_to_cut)
-			connections_to_cut.clear()
-		Input.set_custom_mouse_cursor(null)
-		drag_cut_line.clear()
-		conns.clear()
-		queue_redraw()
+		do_cut_drag()
 	elif event.is_action_released("ui_lasso_select", true):
 		for node in get_children():
 			if node is GraphElement:
@@ -267,7 +255,8 @@ func _gui_input(event) -> void:
 				event.control = true
 				do_zoom(1.0/1.1)
 		elif event.button_index == MOUSE_BUTTON_RIGHT and event.is_pressed():
-			valid_drag_cut_entry = true
+			if event.device != InputEvent.DEVICE_ID_EMULATION:
+				valid_drag_cut_entry = true
 			if event.is_command_or_control_pressed() and event.shift_pressed:
 				create_portals()
 			elif event.shift_pressed:
@@ -402,11 +391,25 @@ func _gui_input(event) -> void:
 			lasso_points.clear()
 			queue_redraw()
 	elif event is InputEventScreenTouch:
-		if not event.pressed and mm_touch.last_touch_duration_msec < 80:
-			if event.index == 1: # 2-finger tap: undo
-				mm_globals.main_window.edit_undo()
-			elif event.index == 2: # 3-finger tap: redo
-				mm_globals.main_window.edit_redo()
+		if not event.pressed:
+			if mm_touch.last_touch_duration_msec < 80:
+				if event.index == 1:
+					mm_globals.main_window.edit_undo()
+				elif event.index == 2:
+					mm_globals.main_window.edit_redo()
+			elif valid_drag_cut_entry and event.index == 0:
+				do_cut_drag()
+				valid_drag_cut_entry = false
+	elif event is InputEventScreenDrag and event.index == 0 and valid_drag_cut_entry:
+		# actions menu knife gesture
+		if is_dragging_connection:
+			force_connection_drag_end()
+		drag_cut_line.append(get_local_mouse_position())
+		queue_redraw()
+	else:
+		if not valid_drag_cut_entry:
+			drag_cut_line.clear()
+			queue_redraw()
 
 func get_padded_node_rect(graph_node:GraphNode) -> Rect2:
 	var rect : Rect2 = graph_node.get_global_rect()
@@ -2069,3 +2072,21 @@ func _on_button_reroll_pressed() -> void:
 
 func _on_button_reroll_mouse_entered() -> void:
 	mm_globals.set_tip_text("#LMB: Reroll all nodes, Shift+#LMB: Reroll selected nodes")
+
+func do_cut_drag() -> void:
+	var conns : Array[Dictionary]
+	for p in len(drag_cut_line) - 1:
+		var rect : Rect2
+		rect.position = drag_cut_line[p]
+		rect.end = drag_cut_line[p + 1]
+		conns = get_connections_intersecting_with_rect(rect.abs())
+		if conns.size():
+			connections_to_cut.append_array(conns)
+	if connections_to_cut.size():
+		on_cut_connections(connections_to_cut)
+		connections_to_cut.clear()
+	Input.set_custom_mouse_cursor(null)
+	drag_cut_line.clear()
+	conns.clear()
+	queue_redraw()
+	cut_drag_finished.emit()
