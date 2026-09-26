@@ -56,6 +56,8 @@ func update_from_graph_edit(graph_edit) -> void:
 	var file_name : String
 	if graph_edit.save_path != null:
 		file_name = graph_edit.save_path.get_file()
+		if file_name == "":
+			file_name = "PTex"
 	fill_item(tree.create_item(null), graph_edit.top_generator, graph_edit.generator, file_name)
 
 
