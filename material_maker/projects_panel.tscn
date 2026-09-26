@@ -543,7 +543,6 @@ Scroll to zoom the 3D Preview."
 [connection signal="value_changed" from="MenuBar/HBox/MainGraphMenuBar/HBox/ViewMenu/ViewMenuPanel/VBoxContainer/VBoxContainer2/Thickness/LineThickness" to="MenuBar/HBox/MainGraphMenuBar/HBox/ViewMenu/ViewMenuPanel" method="_on_line_thickness_value_changed"]
 [connection signal="value_changed" from="MenuBar/HBox/MainGraphMenuBar/HBox/ViewMenu/ViewMenuPanel/VBoxContainer/VBoxContainer2/Curvature/LineCurvature" to="MenuBar/HBox/MainGraphMenuBar/HBox/ViewMenu" method="_on_line_curvature_value_changed"]
 [connection signal="value_changed" from="MenuBar/HBox/MainGraphMenuBar/HBox/ViewMenu/ViewMenuPanel/VBoxContainer/VBoxContainer2/Curvature/LineCurvature" to="MenuBar/HBox/MainGraphMenuBar/HBox/ViewMenu/ViewMenuPanel" method="_on_line_curvature_value_changed"]
-[connection signal="pressed" from="MenuBar/HBox/ActionsMenu/HBox/KnifeTool" to="MenuBar/HBox/ActionsMenu" method="_on_knife_tool_pressed"]
 [connection signal="toggled" from="MenuBar/HBox/ActionsMenu/HBox/KnifeTool" to="MenuBar/HBox/ActionsMenu" method="_on_knife_tool_toggled"]
 [connection signal="pressed" from="MenuBar/HBox/AlignMenu/HBox/AlignStart" to="MenuBar/HBox/AlignMenu" method="_on_align_start_pressed"]
 [connection signal="pressed" from="MenuBar/HBox/AlignMenu/HBox/AlignCenter" to="MenuBar/HBox/AlignMenu" method="_on_align_center_pressed"]
