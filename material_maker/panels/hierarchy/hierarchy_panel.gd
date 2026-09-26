@@ -55,12 +55,7 @@ func update_from_graph_edit(graph_edit) -> void:
 	current_generator.connect("hierarchy_changed", Callable(self, "on_hierarchy_changed"))
 	var file_name : String
 	if graph_edit.save_path != null:
-		if OS.get_name() == "Android":
-			file_name = graph_edit.save_path.uri_decode().replace(":", "/").get_file()
-		else:
-			file_name = graph_edit.save_path.get_file()
-		if file_name == "":
-			file_name = "PTex"
+		file_name = graph_edit.save_path.get_file()
 	fill_item(tree.create_item(null), graph_edit.top_generator, graph_edit.generator, file_name)
 
 

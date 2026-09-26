@@ -610,11 +610,7 @@ func update_tab_title() -> void:
 		return
 	var title = "[unnamed]"
 	if not save_path.is_empty():
-		if OS.get_name() == "Android":
-			var path : String = save_path.uri_decode().replace(":", "/")
-			title = path.get_file()
-		else:
-			title = save_path.get_file()
+		title = save_path.right(-(save_path.rfind("/")+1))
 		if generator:
 			generator.set_meta("file_path", title)
 	if need_save:
