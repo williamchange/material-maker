@@ -81,10 +81,7 @@ func _enter_tree():
 
 			# android-specific defaults
 			if OS.get_name() == "Android":
-				if k in ["node_minimize_button", "node_close_button"]:
-					config.set_value("config", k, false)
-				elif k in ["touch_node_actions"]:
-					config.set_value("config", k, true)
+				android_setup_default_config(k)
 
 func _exit_tree():
 	config.save("user://mm_config.ini")
@@ -301,5 +298,13 @@ func android_open_url(url : String) -> void:
 	b.modulate.a = 0
 	b.pressed.emit()
 	add_child(b)
+
+func android_setup_default_config(k : String) -> void:
+	if k in ["node_minimize_button", "node_close_button"]:
+		config.set_value("config", k, false)
+	elif k in ["touch_node_actions"]:
+		config.set_value("config", k, true)
+	elif k == "ui_3d_preview_resolution":
+		config.set_value("config", k, 1.0)
 
 #endregion
