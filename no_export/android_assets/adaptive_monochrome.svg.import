@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://by6042vpo6i1o"
-path="res://.godot/imported/epping_forest_01_1k.hdr-deb5d85b1c0b655387fa44d4d061848a.ctex"
+uid="uid://bg0pbtr1rxtkq"
+path="res://.godot/imported/adaptive_monochrome.svg-f487da22d3f7c651197253114047abee.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://material_maker/environments/hdris/epping_forest_01_1k.hdr"
-dest_files=["res://.godot/imported/epping_forest_01_1k.hdr-deb5d85b1c0b655387fa44d4d061848a.ctex"]
+source_file="res://no_export/android_assets/adaptive_monochrome.svg"
+dest_files=["res://.godot/imported/adaptive_monochrome.svg-f487da22d3f7c651197253114047abee.ctex"]
 
 [params]
 
@@ -38,3 +38,6 @@ process/hdr_as_srgb=false
 process/hdr_clamp_exposure=false
 process/size_limit=0
 detect_3d/compress_to=1
+svg/scale=1.0
+editor/scale_with_editor_scale=false
+editor/convert_colors_with_editor_theme=false

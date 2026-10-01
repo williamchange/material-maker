@@ -201,17 +201,28 @@ func _on_filter_gui_input(event: InputEvent) -> void:
 		%List.grab_focus()
 		%List.select(1)
 
+var click_start : int
 
 func _on_list_gui_input(event: InputEvent) -> void:
 	if event.is_action("ui_up"):
 		if not %List.item_count or %List.is_selected(0):
 			%Filter.grab_focus()
 
-	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and not event.pressed:
-		var idx: int = %List.get_item_at_position(%List.get_local_mouse_position(), true)
-		if idx != -1:
-			_on_list_item_activated(idx)
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
+		if event.pressed:
+			click_start = Time.get_ticks_msec()
+		else:
+			# releasing a pan gesture also triggers a left click release
+			# use click down/up duration to tell them part
+			if Time.get_ticks_msec() - click_start > 150 and\
+					event.device == InputEvent.DEVICE_ID_EMULATION:
+				return
+			activate_item_at_current_position()
 
+func activate_item_at_current_position() -> void:
+	var idx: int = %List.get_item_at_position(%List.get_local_mouse_position(), true)
+	if idx != -1:
+		_on_list_item_activated(idx)
 
 func get_list_drag_data(m_position):
 	var data = %List.get_item_metadata(%List.get_item_at_position(m_position))

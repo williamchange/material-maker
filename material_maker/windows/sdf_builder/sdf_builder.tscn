@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://pyimsn2fnsa3"]
+[gd_scene format=3 uid="uid://pyimsn2fnsa3"]
 
 [ext_resource type="Script" uid="uid://csqqg3rre416e" path="res://addons/material_maker/engine/nodes/gen_sdf.gd" id="1"]
 [ext_resource type="PackedScene" uid="uid://bf5k7ed5a8ny1" path="res://material_maker/windows/sdf_builder/preview_2d.tscn" id="2"]
@@ -7,7 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://bsdj8r6ur5sja" path="res://material_maker/windows/sdf_builder/preview_3d.tscn" id="5"]
 [ext_resource type="Texture2D" uid="uid://c0j4px4n72di5" path="res://material_maker/icons/icons.tres" id="6"]
 
-[sub_resource type="Shader" id="1"]
+[sub_resource type="Shader" id="Shader_w255t"]
 resource_local_to_scene = true
 code = "shader_type canvas_item;
 
@@ -16,22 +16,22 @@ void fragment() {
 }
 "
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_pgcwv"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_3ieba"]
 resource_local_to_scene = true
-shader = SubResource("1")
+shader = SubResource("Shader_w255t")
 
 [sub_resource type="AtlasTexture" id="3"]
 atlas = ExtResource("6")
 region = Rect2(48, 0, 16, 16)
 
-[node name="Control" type="Window"]
+[node name="Control" type="Window" unique_id=2119552846]
 oversampling_override = 1.0
 title = "Easy SDF"
 position = Vector2i(0, 36)
 exclusive = true
 script = ExtResource("3")
 
-[node name="TopContainer" type="VBoxContainer" parent="."]
+[node name="TopContainer" type="VBoxContainer" parent="." unique_id=1813903354]
 custom_minimum_size = Vector2(800, 400)
 anchors_preset = 15
 anchor_right = 1.0
@@ -39,15 +39,15 @@ anchor_bottom = 1.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="Toolbar" type="HBoxContainer" parent="TopContainer"]
+[node name="Toolbar" type="HBoxContainer" parent="TopContainer" unique_id=1131412570]
 layout_mode = 2
 
-[node name="Main" type="HBoxContainer" parent="TopContainer"]
+[node name="Main" type="HBoxContainer" parent="TopContainer" unique_id=536555123]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="Tree" type="Tree" parent="TopContainer/Main"]
+[node name="Tree" type="Tree" parent="TopContainer/Main" unique_id=893358664]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(200, 200)
 layout_mode = 2
@@ -57,16 +57,32 @@ columns = 3
 select_mode = 1
 script = ExtResource("4")
 
-[node name="Preview2D" parent="TopContainer/Main" instance=ExtResource("2")]
+[node name="AddMenuHint" type="Label" parent="TopContainer/Main/Tree" unique_id=909843201]
+modulate = Color(1, 1, 1, 0.5176471)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -11.5
+offset_right = 20.0
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "Right click to add shapes"
+
+[node name="Preview2D" parent="TopContainer/Main" unique_id=1959647637 instance=ExtResource("2")]
 unique_name_in_owner = true
-material = SubResource("ShaderMaterial_pgcwv")
+material = SubResource("ShaderMaterial_3ieba")
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 size_flags_stretch_ratio = 2.0
 control_target = NodePath("../../..")
 
-[node name="Preview3D" parent="TopContainer/Main" instance=ExtResource("5")]
+[node name="Preview3D" parent="TopContainer/Main" unique_id=1310016379 instance=ExtResource("5")]
 unique_name_in_owner = true
 visible = false
 custom_minimum_size = Vector2(200, 200)
@@ -74,64 +90,64 @@ layout_mode = 2
 size_flags_stretch_ratio = 2.0
 control_target = NodePath("../../..")
 
-[node name="ScrollContainer" type="ScrollContainer" parent="TopContainer/Main"]
+[node name="ScrollContainer" type="ScrollContainer" parent="TopContainer/Main" unique_id=353185977]
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 horizontal_scroll_mode = 0
 
-[node name="Parameters" type="VBoxContainer" parent="TopContainer/Main/ScrollContainer"]
+[node name="Parameters" type="VBoxContainer" parent="TopContainer/Main/ScrollContainer" unique_id=1798894236]
 layout_mode = 2
 
-[node name="NodeParametersButton" type="CheckBox" parent="TopContainer/Main/ScrollContainer/Parameters"]
+[node name="NodeParametersButton" type="CheckBox" parent="TopContainer/Main/ScrollContainer/Parameters" unique_id=1529979988]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Node Parameters"
 
-[node name="NodeParameters" type="GridContainer" parent="TopContainer/Main/ScrollContainer/Parameters"]
+[node name="NodeParameters" type="GridContainer" parent="TopContainer/Main/ScrollContainer/Parameters" unique_id=973095459]
 unique_name_in_owner = true
 layout_mode = 2
 columns = 7
 
-[node name="Button" type="Button" parent="TopContainer/Main/ScrollContainer/Parameters"]
+[node name="Button" type="Button" parent="TopContainer/Main/ScrollContainer/Parameters" unique_id=582137754]
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 0
 icon = SubResource("3")
 
-[node name="HSeparator" type="HSeparator" parent="TopContainer/Main/ScrollContainer/Parameters"]
+[node name="HSeparator" type="HSeparator" parent="TopContainer/Main/ScrollContainer/Parameters" unique_id=805187937]
 layout_mode = 2
 
-[node name="ItemParametersButton" type="CheckBox" parent="TopContainer/Main/ScrollContainer/Parameters"]
+[node name="ItemParametersButton" type="CheckBox" parent="TopContainer/Main/ScrollContainer/Parameters" unique_id=1841723999]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Item Parameters"
 
-[node name="ItemParameters" type="GridContainer" parent="TopContainer/Main/ScrollContainer/Parameters"]
+[node name="ItemParameters" type="GridContainer" parent="TopContainer/Main/ScrollContainer/Parameters" unique_id=853757331]
 unique_name_in_owner = true
 layout_mode = 2
 columns = 3
 
-[node name="Buttons" type="HBoxContainer" parent="TopContainer"]
+[node name="Buttons" type="HBoxContainer" parent="TopContainer" unique_id=1332660993]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 5
 
-[node name="Apply" type="Button" parent="TopContainer/Buttons"]
+[node name="Apply" type="Button" parent="TopContainer/Buttons" unique_id=1864510294]
 custom_minimum_size = Vector2(60, 0)
 layout_mode = 2
 text = "Apply"
 
-[node name="OK" type="Button" parent="TopContainer/Buttons"]
+[node name="OK" type="Button" parent="TopContainer/Buttons" unique_id=18807233]
 custom_minimum_size = Vector2(60, 0)
 layout_mode = 2
 text = "OK"
 
-[node name="Cancel" type="Button" parent="TopContainer/Buttons"]
+[node name="Cancel" type="Button" parent="TopContainer/Buttons" unique_id=675990221]
 custom_minimum_size = Vector2(60, 0)
 layout_mode = 2
 text = "Cancel"
 
-[node name="GenSDF" type="Node" parent="."]
+[node name="GenSDF" type="Node" parent="." unique_id=1119724446]
 script = ExtResource("1")
 editor = true
 
