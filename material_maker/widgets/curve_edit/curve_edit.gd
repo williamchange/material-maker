@@ -21,7 +21,7 @@ func _on_CurveEdit_pressed():
 	var content_scale_factor : float = mm_globals.ui_scale_factor()
 	dialog.content_scale_factor = content_scale_factor
 	dialog.min_size = Vector2(500, 500)*content_scale_factor
-	mm_globals.main_window.add_dialog(dialog)
+	mm_globals.main_window.add_dialog(dialog, OS.get_name() == "Android")
 	dialog.connect("curve_changed",Callable(self,"on_value_changed"))
 	var new_curve = await dialog.edit_curve(value)
 	if new_curve != null:
