@@ -1660,7 +1660,7 @@ func android_set_theme_overrides(t : Theme) -> void:
 	t.set_constant("v_separation", "Tree", 6)
 	t.set_constant("v_separation", "ItemList", 6)
 	t.set_constant("v_separation", "MM_AddNodePanelList", 10)
-	t.set_constant("resize_margin", "Window", 16)
+	t.set_constant("resize_margin", "Window", 24)
 
 	t.set_stylebox("pressed", "Button", t.get_stylebox("hover_pressed", "Button"))
 	t.set_stylebox("hover", "Button", t.get_stylebox("normal", "Button"))
