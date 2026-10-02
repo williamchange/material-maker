@@ -190,17 +190,20 @@ func calc_node_rect(n : GraphElement) -> Rect2:
 
 func node_selection_has_generic() -> bool:
 	for node in selected_nodes:
-		return should_generic_visible(node.generator)
+		if should_generic_visible(node.generator):
+			return true
 	return false
 
 func node_selection_has_randomness() -> bool:
 	for node in selected_nodes:
-		return should_random_visible(node.generator)
+		if should_random_visible(node.generator):
+			return true
 	return false
 
 func node_selection_can_be_deleted() -> bool:
 	for node in selected_nodes:
-		return should_close_visible(node.generator)
+		if should_close_visible(node.generator):
+			return true
 	return false
 
 func randomize_selected_nodes() -> void:
