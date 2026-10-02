@@ -9,6 +9,25 @@ var main_window : MainWindow
 signal preferences_updated
 
 
+const INVALID : int = -1
+const DEFAULT_DARK : int = 0
+const DEFAULT_LIGHT : int = 1
+const CLASSIC : int = 2
+
+## Returns current theme based on Main Window's theme resource path.
+var current_theme : int:
+	get:
+		var t : String = main_window.theme.resource_path.get_file()
+		match t.trim_suffix(".tres").to_lower():
+			"default dark":
+				return DEFAULT_DARK
+			"default light":
+				return DEFAULT_LIGHT
+			"classic":
+				return CLASSIC
+			_:
+				return INVALID
+
 var config : ConfigFile = ConfigFile.new()
 const DEFAULT_CONFIG : Dictionary = {
 	locale = "",
