@@ -120,15 +120,16 @@ func create_panel() -> void:
 		var gen : MMGenBase = node.generator
 
 		if node.get_script() in [ MMGraphPortal, MMGraphReroute,
-				MMGraphCommentLine, MMGraphDebug ]:
+				MMGraphCommentLine, MMGraphComment, MMGraphDebug ]:
 			buttons.minimize.hide()
 			buttons.randomize.hide()
 			buttons.generic.hide()
 			buttons.custom.hide()
 
-			position = node.position
-			position.x += node.size.x * 0.5 * parent.zoom - size.x - 6
-			position.y += (node.size.y + H_PAD) * parent.zoom
+			if node is not MMGraphComment:
+				position = node.position
+				position.x += node.size.x * 0.5 * parent.zoom - size.x - 6
+				position.y += (node.size.y + H_PAD) * parent.zoom
 		else:
 			buttons.close.visible = should_close_visible(gen)
 			buttons.randomize.visible = should_random_visible(gen)
