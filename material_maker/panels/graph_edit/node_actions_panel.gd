@@ -59,6 +59,7 @@ func setup_signals() -> void:
 	parent.draw.connect(draw_selection_area)
 
 class ActionButton extends Button:
+	## Emitted when button is right clicked(long pressed for touch)
 	signal on_show_popup
 
 	func _gui_input(event : InputEvent) -> void:
@@ -121,7 +122,7 @@ func create_panel() -> void:
 
 		if node.get_script() in [ MMGraphPortal, MMGraphReroute,
 				MMGraphCommentLine, MMGraphSwitch, MMGraphComment,
-				MMGraphDebug ]:
+				MMGraphDebug, MMGraphNodeRemote ]:
 			buttons.minimize.hide()
 			buttons.randomize.hide()
 			buttons.generic.hide()
@@ -131,7 +132,8 @@ func create_panel() -> void:
 				buttons.custom.show()
 				buttons.custom.connect_actions(node_switch_edit.bind(node))
 
-			if node.get_script() not in [MMGraphSwitch, MMGraphComment]:
+			if node.get_script() not in [
+					MMGraphNodeRemote, MMGraphSwitch, MMGraphComment]:
 				position = node.position
 				position.x += node.size.x * 0.5 * parent.zoom - size.x - 6
 				position.y += (node.size.y + H_PAD) * parent.zoom
