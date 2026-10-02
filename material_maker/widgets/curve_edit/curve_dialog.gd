@@ -20,11 +20,8 @@ func _on_Cancel_pressed():
 func edit_curve(curve : MMCurve) -> Dictionary:
 	previous_value = curve.duplicate()
 	$VBoxContainer/EditorContainer/CurveEditor.set_curve(curve)
-	if OS.get_name() == "Android":
-		mm_touch.setup_dialog(self)
-	else:
-		hide()
-		popup_centered()
+	hide()
+	popup_centered()
 	var result = await self.return_curve
 	queue_free()
 	return { value=result, previous_value=previous_value }
