@@ -97,7 +97,6 @@ const ANDROID_CONFIG : Dictionary[String, Variant] = {
 	node_close_button = false,
 	touch_node_actions = true,
 	ui_3d_preview_resolution = 1.0,
-	ui_3d_preview_tesselation_detail = 128,
 }
 
 func _enter_tree() -> void:
