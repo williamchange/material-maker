@@ -19,6 +19,8 @@ var parent_control_node = null
 var children_control_nodes = []
 
 func _ready() -> void:
+	if OS.get_name() == "Android":
+		custom_minimum_size = size * 1.5
 	if parent_control != "":
 		parent_control_node = get_parent().get_node(parent_control)
 		if parent_control_node != null:
