@@ -648,7 +648,7 @@ func change_theme(theme_name) -> void:
 	theme = _theme
 
 	if OS.get_name() == "Android":
-		android_set_theme_prop(theme)
+		android_set_theme_overrides(theme)
 
 	if "classic" in theme_name:
 		RenderingServer.set_default_clear_color(Color(0.14, 0.17,0.23))
@@ -1631,7 +1631,7 @@ func android_update_status_bar_margins(spacer : Control) -> void:
 		var reach : float = sqrt(maxf((r) ** 2.0 - (r-h) ** 2.0, 0.0))
 		spacer.custom_minimum_size.x = reach / mm_globals.get_ui_scale()
 
-func android_set_theme_prop(t : Theme) -> void:
+func android_set_theme_overrides(t : Theme) -> void:
 	# Android-specific theme customizations
 	const vh_scroll_width : int = 10
 	var sv : StyleBoxFlat = t.get_stylebox("scroll", "VScrollBar")
