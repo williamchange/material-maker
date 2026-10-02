@@ -1245,6 +1245,9 @@ func environment_editor() -> Node:
 # -----------------------------------------------------------------------
 
 func get_doc_dir() -> String:
+	if OS.get_name() == "Android":
+		return MMPaths.DOC_ADDRESS
+
 	var base_dir = MMPaths.get_resource_dir().replace("\\", "/")
 	# In release builds, documentation is expected to be located in
 	# a subdirectory of the program directory
@@ -1276,14 +1279,24 @@ func show_library_item_doc() -> void:
 	var doc_dir : String = get_doc_dir()
 	if doc_dir != "":
 		var doc_name = library.get_selected_item_doc_name()
+		var doc_path : String = doc_dir+"/node_"+doc_name+".html"
+
+		if OS.get_name() == "Android":
+			if library.get_selected_item_name() == "" or not library.is_inside_tree():
+				mm_globals.android_make_toast("Please select an item in the libary panel.")
+			else:
+				mm_globals.android_open_url(doc_path)
+			return
+
 		while doc_name != "":
-			var doc_path : String = doc_dir+"/node_"+doc_name+".html"
 			if FileAccess.file_exists(doc_path):
 				OS.shell_open(doc_path)
 				break
 			doc_name = doc_name.left(doc_name.rfind("_"))
 
 func show_library_item_doc_is_disabled() -> bool:
+	if OS.get_name() == "Android":
+		return false
 	return get_doc_dir() == "" or !library.is_inside_tree() or library.get_selected_item_doc_name() == ""
 
 func bug_report() -> void:
