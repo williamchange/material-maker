@@ -1285,7 +1285,8 @@ func show_library_item_doc() -> void:
 			if library.get_selected_item_name() == "" or not library.is_inside_tree():
 				mm_globals.android_make_toast("Please select an item in the libary panel.")
 			else:
-				mm_globals.android_open_url(doc_path)
+				var path : String = android_process_doc_path(doc_dir, doc_name)
+				mm_globals.android_open_url(path)
 			return
 
 		while doc_name != "":
@@ -1690,5 +1691,23 @@ func android_load_example_project() -> void:
 	var files = await dialog.select_files()
 	if files.size() > 0:
 		do_load_project(files[0])
+
+func android_process_doc_path(doc_dir : String, doc_name : String) -> String:
+	const mappings : Dictionary[String, String] = {
+		"miscellaneous_aperture_in": "aperture_nodes",
+		"miscellaneous_aperture_out": "aperture_nodes",
+		"miscellaneous_reroute": "reroute_nodes",
+		"miscellaneous": "miscellaneous_nodes",
+		"wofkflow": "nodes_workflow",
+		"transform": "nodes_transform",
+		"filter": "nodes_filter",
+		"noise": "nodes_noise",
+		"pattern": "nodes_pattern",
+		"3d": "nodes_3d",
+		"simple": "nodes_simple",
+	}
+	if mappings.has(doc_name):
+		return doc_dir.path_join(mappings[doc_name]+".html")
+	return doc_dir+"/node_"+doc_name+".html"
 
 #endregion
