@@ -57,6 +57,9 @@ func _on_gui_input(event : InputEvent) -> void:
 				## 1-finger item drag from library
 				_force_drag()
 				accept_event()
+		elif event is InputEventScreenTouch and event.index == 0:
+			if not event.pressed and mm_touch.last_touch_duration_msec > 120:
+				deselect_all()
 
 	if OS.get_name() == "Android" and event is InputEventPanGesture:
 		tree_scrollbar.value += event.delta.y * 2.0
