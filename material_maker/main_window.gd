@@ -266,7 +266,7 @@ func _ready() -> void:
 	position = Vector2i(0, 0)
 
 	if OS.get_name() == "Android":
-		# copy for image node's default mm_icon.png
+		# copy image node's default mm_icon.png
 		android_copy_examples("png")
 		tip_label.hide()
 
