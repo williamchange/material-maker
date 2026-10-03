@@ -118,6 +118,9 @@ func setup_margins(container : MarginContainer, margin_offset_left : int,
 	container.add_theme_constant_override("margin_right",
 			maxi(0, calc_margins(Side.SIDE_RIGHT) + margin_ofset_right))
 
+func handle_show_tooltip(c : Control) -> void:
+	c.gui_input.connect(_show_tooltip.bind(c))
+
 func _first_window_child(node : Node, exclude_list : PackedStringArray) -> Window:
 	if node != null:
 		for w in node.get_children():
@@ -171,3 +174,27 @@ func _get_android_version() -> int:
 	if not android_runtime:
 		return -1
 	return JavaClassWrapper.wrap("android.os.Build$VERSION").SDK_INT
+
+func _show_tooltip(e : InputEvent, c : Control) -> void:
+	if get_tree().root.has_node("TouchTooltipPanel"):
+		return
+	if e is InputEventScreenTouch and e.pressed and e.index == 0:
+		var at : Vector2 = c.get_global_mouse_position()
+		const margin : Vector2i = Vector2i(24, 24)
+		var main_window : MainWindow = get_node("/root/MainWindow")
+
+		var tool_tip_panel : PopupPanel = PopupPanel.new()
+		tool_tip_panel.name = "TouchTooltipPanel"
+		tool_tip_panel.theme = main_window.theme
+		tool_tip_panel.theme_type_variation = "TooltipPanel"
+
+		var label : Label = Label.new()
+		label.text = c.tooltip_text
+
+		tool_tip_panel.add_child(label)
+		get_tree().root.add_child(tool_tip_panel)
+		var tsize : Vector2i = tool_tip_panel.get_contents_minimum_size()
+		var vsize : Vector2i = get_viewport().get_visible_rect().size
+		tool_tip_panel.position = at.clamp(margin, vsize - tsize - margin)
+		tool_tip_panel.popup()
+		tool_tip_panel.popup_hide.connect(tool_tip_panel.queue_free)
