@@ -266,6 +266,8 @@ func _ready() -> void:
 	position = Vector2i(0, 0)
 
 	if OS.get_name() == "Android":
+		# copy for image node's default mm_icon.png
+		android_copy_examples("png")
 		tip_label.hide()
 
 var menu_update_requested : bool = false
@@ -1665,9 +1667,8 @@ func android_set_theme_overrides(t : Theme) -> void:
 	t.set_stylebox("pressed", "Button", t.get_stylebox("hover_pressed", "Button"))
 	t.set_stylebox("hover", "Button", t.get_stylebox("normal", "Button"))
 
-func android_copy_examples() -> void:
+func android_copy_examples(ext : String = "ptex") -> void:
 	# copy example projects from exported examples
-	# and default mm_icon.png for image node
 	var base : String = "res://material_maker/examples/"
 	var examples : String = "user://examples/"
 	DirAccess.make_dir_absolute("user://examples/")
@@ -1679,7 +1680,7 @@ func android_copy_examples() -> void:
 		arr.push_back(f)
 		if f.is_empty():
 			break
-		if f.get_extension() in ["png", "ptex"] and not FileAccess.file_exists(examples.path_join(f)):
+		if f.get_extension() == ext and not FileAccess.file_exists(examples.path_join(f)):
 			dir.copy(base.path_join(f), examples.path_join(f))
 	dir.list_dir_end()
 
