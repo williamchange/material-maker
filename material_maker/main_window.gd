@@ -1667,6 +1667,7 @@ func android_set_theme_overrides(t : Theme) -> void:
 
 func android_copy_examples() -> void:
 	# copy example projects from exported examples
+	# and default mm_icon.png for image node
 	var base : String = "res://material_maker/examples/"
 	var examples : String = "user://examples/"
 	DirAccess.make_dir_absolute("user://examples/")
@@ -1678,7 +1679,7 @@ func android_copy_examples() -> void:
 		arr.push_back(f)
 		if f.is_empty():
 			break
-		if f.get_extension() == "ptex" and not FileAccess.file_exists(examples.path_join(f)):
+		if f.get_extension() in ["png", "ptex"] and not FileAccess.file_exists(examples.path_join(f)):
 			dir.copy(base.path_join(f), examples.path_join(f))
 	dir.list_dir_end()
 
