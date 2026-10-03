@@ -85,6 +85,14 @@ func _get_data_preview() -> Dictionary:
 		else:
 			preview = Label.new()
 			preview.text = data.tree_item
+
+		if OS.get_name() == "Android":
+			var offset : Vector2 = Vector2.ZERO
+			preview.scale = Vector2(1.5, 1.5)
+			offset = preview_texture.get_size() if preview_texture else preview.size
+			preview.offset_transform_enabled = true
+			preview.offset_transform_position = -offset * 0.5
+
 		return { "preview": preview, "data": data } 
 	return {}
 
