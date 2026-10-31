@@ -1,3 +1,4 @@
+class_name PreferenceTouchHint
 extends Control
 
 var highlight : StyleBoxFlat
@@ -28,7 +29,7 @@ func _ready() -> void:
 			if container is not Container:
 				continue
 			for control : Control in container.get_children():
-				if control.get_script() in [BoolOption, EnumOption, FloatOption]:
+				if control.get_script() in [BoolOption, EnumOption, FloatOption, ColorOption, EnumChecklist]:
 					control.mouse_entered.connect(_item_mouse_entered.bind(container, control.tooltip_text))
 					control.mouse_exited.connect(_item_mouse_exited.bind(container))
 					container.mouse_entered.connect(_item_mouse_entered.bind(container, control.tooltip_text))
