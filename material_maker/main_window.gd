@@ -123,7 +123,7 @@ const MENU : Array[Dictionary] = [
 	{ menu="Help/User manual", command="show_doc", shortcut="F1" },
 	{ menu="Help/Example projects", command="show_example_projects"},
 	{ menu="Help/Show selected library item documentation", command="show_library_item_doc", shortcut="Control+F1" },
-	{ menu="Help/Report a bug", command="bug_report" },
+	{ menu="Help/Report a bug", command="bug_report", not_in_ports=["Android"] }, #TODO remove not_in_ports for android when pr is ready
 	{ menu="Help/" },
 	{ menu="Help/About", command="about" }
 ]
