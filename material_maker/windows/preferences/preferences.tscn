@@ -767,10 +767,8 @@ text = "Enable touch optimizations (requires restart)"
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 size_flags_horizontal = 10
-tooltip_text = "When enabled, this increases the touch area of scrollbars, makes vertical seperation between popup menu items
-larger, enables a touch dragger for panel splits etc. to increase usability on smaller screens.
-
-This is enabled by default on Android."
+tooltip_text = "When enabled, increases the touch area of scrollbars, makes vertical seperation between popup menu items
+larger, enables a touch dragger for panel splits etc. to increase usability on smaller screens."
 text = "On"
 flat = false
 config_variable = "touch_optimization"
@@ -795,7 +793,7 @@ config_variable = "touch_full_screen"
 [node name="PreferenceTouchHint" type="PanelContainer" parent="HSplitContainer/PreferencesPanel/VBoxContainer" unique_id=328849096]
 visible = false
 layout_mode = 2
-theme_type_variation = &"MM_PanelBackground"
+theme_type_variation = &"MM_PanelMenuSubPanel"
 script = ExtResource("10_lcx40")
 
 [node name="MarginContainer" type="MarginContainer" parent="HSplitContainer/PreferencesPanel/VBoxContainer/PreferenceTouchHint" unique_id=508458780]
@@ -806,14 +804,15 @@ theme_override_constants/margin_right = 6
 theme_override_constants/margin_bottom = 6
 
 [node name="ScrollContainer" type="ScrollContainer" parent="HSplitContainer/PreferencesPanel/VBoxContainer/PreferenceTouchHint/MarginContainer" unique_id=1664878493]
-custom_minimum_size = Vector2(0, 60)
-custom_maximum_size = Vector2(-1, 60)
+custom_minimum_size = Vector2(0, 64)
+custom_maximum_size = Vector2(-1, 64)
 layout_mode = 2
 
 [node name="TouchHintLabel" type="Label" parent="HSplitContainer/PreferencesPanel/VBoxContainer/PreferenceTouchHint/MarginContainer/ScrollContainer" unique_id=1926624238]
 custom_minimum_size = Vector2(1, 0)
 layout_mode = 2
 size_flags_horizontal = 3
+size_flags_vertical = 0
 autowrap_mode = 3
 
 [node name="MarginContainer" type="MarginContainer" parent="HSplitContainer/PreferencesPanel/VBoxContainer" unique_id=245791047]
