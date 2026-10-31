@@ -10,7 +10,6 @@ func _ready():
 	connect("picker_created",Callable(self,"on_picker_created"))
 	connect("popup_closed",Callable(self,"on_popup_closed"))
 	get_popup().content_scale_factor = mm_globals.ui_scale_factor()
-	get_popup().min_size = get_popup().get_contents_minimum_size() * get_popup().content_scale_factor
 	get_popup().borderless = not mm_globals.get_config("color_picker_floating")
 
 func set_color(c):
