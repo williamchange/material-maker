@@ -1952,6 +1952,7 @@ func colorize_nodes() -> void:
 	var picker : ColorPicker = ColorPicker.new()
 	var popup : PopupPanel = PopupPanel.new()
 	popup.borderless = not mm_globals.get_config("color_picker_floating")
+	picker.presets_visible = mm_globals.get_config("color_picker_show_presets")
 	popup.add_child(picker)
 	popup.hide()
 	add_child(popup)

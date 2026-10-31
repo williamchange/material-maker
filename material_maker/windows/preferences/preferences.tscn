@@ -656,6 +656,23 @@ text = "On"
 flat = false
 config_variable = "color_picker_floating"
 
+[node name="ColorPickerPresets" type="HBoxContainer" parent="HSplitContainer/PreferencesPanel/VBoxContainer/TabContainer/Graph/VBoxContainer" unique_id=697064263]
+layout_mode = 2
+
+[node name="LabelPickerPresets" type="Label" parent="HSplitContainer/PreferencesPanel/VBoxContainer/TabContainer/Graph/VBoxContainer/ColorPickerPresets" unique_id=1859741716]
+layout_mode = 2
+text = "Show swatches and recent colors for color picker"
+
+[node name="ColorPickerPresets" parent="HSplitContainer/PreferencesPanel/VBoxContainer/TabContainer/Graph/VBoxContainer/ColorPickerPresets" unique_id=1394913724 instance=ExtResource("1")]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+size_flags_horizontal = 10
+tooltip_text = "When enabled, swatches and recent colors are visible in color picker."
+button_pressed = true
+text = "On"
+flat = false
+config_variable = "color_picker_show_presets"
+
 [node name="Spacer4" type="Control" parent="HSplitContainer/PreferencesPanel/VBoxContainer/TabContainer/Graph/VBoxContainer" unique_id=2075313801]
 custom_minimum_size = Vector2(0, 10)
 layout_mode = 2
