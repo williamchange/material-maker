@@ -542,10 +542,6 @@ atlas = ExtResource("1_s43fy")
 region = Rect2(32, 16, 16, 16)
 metadata/scale = 2.0
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_n4y2n"]
-atlas = ExtResource("1_s43fy")
-region = Rect2(0, 64, 16, 16)
-
 [sub_resource type="AtlasTexture" id="AtlasTexture_w255t"]
 atlas = ExtResource("1_s43fy")
 region = Rect2(96, 240, 16, 16)
@@ -739,15 +735,6 @@ region = Rect2(96, 16, 16, 16)
 [sub_resource type="AtlasTexture" id="AtlasTexture_iofl8"]
 atlas = ExtResource("1_s43fy")
 region = Rect2(48, 16, 16, 16)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_6yetl"]
-atlas = ExtResource("1_s43fy")
-region = Rect2(48, 240, 16, 16)
-metadata/scale = 1.0
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_l6nwy"]
-atlas = ExtResource("1_s43fy")
-region = Rect2(64, 240, 16, 16)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_en6gw"]
 atlas = ExtResource("1_s43fy")
