@@ -9,10 +9,6 @@ var main_window : MainWindow
 signal preferences_updated
 
 
-const DEFAULT_DARK : int = 0
-const DEFAULT_LIGHT : int = 1
-const CLASSIC : int = 2
-
 var config : ConfigFile = ConfigFile.new()
 const DEFAULT_CONFIG : Dictionary = {
 	locale = "",
@@ -286,19 +282,6 @@ func get_ui_scale() -> float:
 		# This prevents UI elements from being too small on hiDPI displays.
 		return 2 if DisplayServer.screen_get_dpi() >= 192 and DisplayServer.screen_get_size().x >= 2048 else 1
 	return ui_scale
-
-## Returns current theme based on Main Window's theme resource path.
-func current_theme() -> int:
-	var t : String = main_window.theme.resource_path.get_file()
-	match t.trim_suffix(".tres").to_lower():
-		"default dark":
-			return DEFAULT_DARK
-		"default light":
-			return DEFAULT_LIGHT
-		"classic":
-			return CLASSIC
-		_:
-			return DEFAULT_DARK
 
 #region android utilties
 
